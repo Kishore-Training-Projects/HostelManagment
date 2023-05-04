@@ -178,6 +178,24 @@ export const Register = () => {
                       required=""
                     />
                   </div>
+                  <div>
+                    <label
+                      for="category"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Occupation Type
+                    </label>
+                    <select
+                      id="category"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option selected="">Select category</option>
+                      <option value="">Student</option>
+                      <option value="">Working</option>
+                      <option value="">Business</option>
+                      <option value="">FreeLance</option>
+                    </select>
+                  </div>
                   <div class="w-full">
                     <label
                       for="price"
@@ -186,7 +204,7 @@ export const Register = () => {
                       Institute Name
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       name="price"
                       id="price"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -195,33 +213,16 @@ export const Register = () => {
                     />
                   </div>
 
-                  <div>
-                    <label
-                      for="category"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Program
-                    </label>
-                    <select
-                      id="category"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option selected="">Select category</option>
-                      <option value="TV">TV/Monitors</option>
-                      <option value="PC">PC</option>
-                      <option value="GA">Gaming/Console</option>
-                      <option value="PH">Phones</option>
-                    </select>
-                  </div>
+                 
                   <div>
                     <label
                       for="item-weight"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Batch
+                      location
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       name="item-weight"
                       id="item-weight"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Register } from "../login/register";
 import { Dashboard } from "../pages/hosteller/dashboard";
 import { Profile } from "../pages/hosteller/profile";
+import { Room } from "../pages/hosteller/room";
 import { Complaint } from "../pages/hosteller/complaint";
 
 import { AdminDashboard } from "../pages/admin/DashboardAdmin";
@@ -42,6 +43,10 @@ const routerList = [
   {
     path: "/user/complaint",
     element: <Complaint />,
+  },
+  {
+    path: "/user/room",
+    element: <Room />,
   },
   {
     path: "/user/profile",
