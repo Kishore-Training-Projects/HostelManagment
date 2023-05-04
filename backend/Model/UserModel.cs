@@ -1,5 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HostelManagement.Model
 {
@@ -8,7 +9,7 @@ namespace HostelManagement.Model
         [Key]
         public int UserID { get; set; }
 
-        
+        [AllowNull]
         public string UserName { get; set; }
 
         
@@ -16,5 +17,16 @@ namespace HostelManagement.Model
 
         
         public string Password { get; set; }
+
+        [AllowNull]
+        public string UserType { get; set; }
+
+
+
+
+
+
+
+
     }
 }

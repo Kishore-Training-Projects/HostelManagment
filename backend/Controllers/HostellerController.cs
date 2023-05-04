@@ -70,10 +70,36 @@ namespace HostelManagement.Controllers
         }
 
 
+        // POST: api/Hosteller/user/login
+        [HttpPost("user/login")]
+        public async Task<ActionResult<HostellerModel>> checkemailbyuser(string email)
+        {
+
+
+            if (_context.HostellerModel == null)
+            {
+                return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
+            }
+            HostellerModel hosteller = new HostellerModel();
+            try
+            {
+                hosteller = await _context.HostellerModel.Where(x => x.Email == email).FirstOrDefaultAsync();
+
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+
+            }
+          
+          
+
+            return hosteller;
+        }
+
 
 
         // POST: api/Hosteller
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("/addroom/")]
         public async Task<ActionResult<HostellerModel>> PostHostellerModelss(int value1 , int value2)
         {
@@ -100,14 +126,14 @@ namespace HostelManagement.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHostellerModel(int id, HostellerModel hostellerModel)
         {
-            Console.WriteLine(hostellerModel.Room.RoomNo);
+            
 
-            if (hostellerModel.Room.RoomNo != null)
+            /*if (hostellerModel.Room.RoomNo != null)
             {
                 Console.WriteLine("in if");
                 var room = await _context.RoomModel.Where(x => x.RoomNo == hostellerModel.Room.RoomNo).FirstOrDefaultAsync();
                 hostellerModel.Room = room;
-            }
+            }*/
 
             if (id != hostellerModel.HostellerId)
             {

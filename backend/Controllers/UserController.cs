@@ -81,6 +81,35 @@ namespace HostelManagement.Controllers
             return NoContent();
         }
 
+
+
+        // POST: api/login
+        [HttpPost("login")]
+        public async Task<ActionResult<UserModel>> getuserlogin(UserModel userModel)
+        {
+            if (_context.UserModel == null)
+            {
+                return Problem("Entity set 'HostelManagementContext.UserModel'  is null.");
+            }
+
+            var user = await _context.UserModel.Where(x => x.UserEmail == userModel.UserEmail).Where(x=> x.Password == userModel.Password).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Problem("User Doesnt Exist");
+            }
+            else
+            {
+                return user;
+            }
+
+            return user;
+        }
+
+
+
+
+
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

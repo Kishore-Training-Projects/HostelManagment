@@ -12,6 +12,9 @@ namespace HostelManagement.Model
 
         public string Gender { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime DOB { get; set; }
+
         public int Age { get; set;}
 
         public string BloodGroup { get; set; }
@@ -29,6 +32,7 @@ namespace HostelManagement.Model
         public string OccupationName { get; set; }
 
         public string OccupationLocation { get;set; }
+
 
         public string Address { get; set; }
 

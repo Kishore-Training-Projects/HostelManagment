@@ -1,6 +1,62 @@
 import React from "react";
-import Userheader from "../layout/header/userheader";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const Register = () => {
+
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    Name: "",
+    gender: "",
+    DOB: "",
+    Age: "",
+    BloodGroup: "",
+    Mobile: "",
+    Email: "",
+    FatherName: "",
+    FatherMobile: "",
+    Occupation: "",
+    OccupationName: "",
+    OccupationLocation: "",
+    Address:"",
+    Room:null
+  });
+
+
+  const submit_form = (event) => {
+    event.preventDefault();
+    fetch("https://localhost:7047/api/Hosteller", {
+      method: "post",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-type": "application/JSON",
+      },
+    })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((res) => {
+        if (res.status >= 400) {
+          throw new Error("Server responds with error!");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if(data["detail"]) {
+          alert("Error Cant Insert");
+        }
+        else {          
+         navigate("/login");
+        } 
+         
+      });
+  };
+
+
+
+
   return (
     <>
 
@@ -31,7 +87,7 @@ export const Register = () => {
               <h2 class="mb-7 mt-5 text-2xl text-center font-bold text-gray-900 dark:text-white">
                 Welcome to Hostel 🙏
               </h2>
-              <form action="#">
+              <form onSubmit={submit_form}>
                 <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">
                   <div class="sm:col-span-2">
                     <label
@@ -43,10 +99,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      name="Name"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="brand"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder="Full Name"
                       required=""
                     />
                   </div>
@@ -60,26 +122,39 @@ export const Register = () => {
                     </label>
                     <input
                       type="date"
-                      name="name"
+                      name="DOB"
                       id="brand"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder="Date of Birth"
                       required=""
                     />
                   </div>
                   <div>
                     <label
-                      for="price"
+                      for=""
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Gender
                     </label>
                     <select
                       id="category"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
+                      name="gender"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value="TV">Male</option>
-                      <option value="PC">Female</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                     </select>
                   </div>
                   <div class="w-full">
@@ -90,11 +165,17 @@ export const Register = () => {
                       Age
                     </label>
                     <input
-                      type="text"
-                      name="name"
+                      type="number"
+                      name="Age"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="brand"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder="Age"
                       required=""
                     />
                   </div>
@@ -107,10 +188,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      name="BloodGroup"
                       id="brand"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder=" Blood Group"
                       required=""
                     />
                   </div>
@@ -123,10 +210,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="email"
-                      name="name"
+                      name="Email"
                       id="name"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Type product name"
+                      placeholder="Email Address"
                       required=""
                     />
                   </div>
@@ -139,10 +232,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="brand"
+                      name="Mobile"
                       id="brand"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder="Mobile"
                       required=""
                     />
                   </div>
@@ -154,11 +253,17 @@ export const Register = () => {
                       Father Name
                     </label>
                     <input
-                      type="email"
-                      name="name"
+                      type="text"
+                      name="FatherName"
                       id="name"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Type product name"
+                      placeholder="Father Name"
                       required=""
                     />
                   </div>
@@ -171,10 +276,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="brand"
+                      name="FatherMobile"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="brand"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Product brand"
+                      placeholder="Father Mobile"
                       required=""
                     />
                   </div>
@@ -187,13 +298,20 @@ export const Register = () => {
                     </label>
                     <select
                       id="category"
+                      name="Occupation"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option selected="">Select category</option>
-                      <option value="">Student</option>
-                      <option value="">Working</option>
-                      <option value="">Business</option>
-                      <option value="">FreeLance</option>
+                      <option value="student">Student</option>
+                      <option value="working">Working</option>
+                      <option value="business">Business</option>
+                      <option value="freelance">FreeLance</option>
                     </select>
                   </div>
                   <div class="w-full">
@@ -201,14 +319,20 @@ export const Register = () => {
                       for="price"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Institute Name
+                      Occupation Name
                     </label>
                     <input
                       type="text"
-                      name="price"
+                      name="OccupationName"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="price"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="$2999"
+                      placeholder="Occupation Name"
                       required=""
                     />
                   </div>
@@ -223,10 +347,16 @@ export const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="item-weight"
+                      name="OccupationLocation"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="item-weight"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="12"
+                      placeholder="location"
                       required=""
                     />
                   </div>
@@ -240,8 +370,15 @@ export const Register = () => {
                     <textarea
                       id="description"
                       rows="8"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
+                      name="Address"
                       class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Your description here"
+                      placeholder="Address"
                     ></textarea>
                   </div>
                 </div>
