@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Userheader from "../../layout/header/userheader";
+import { useEffect } from "react";
+
 export const Dashboard = () => {
+
+  const [name,setname] = useState("");
+  useEffect(() => {
+    const profile = () => {
+      var item_value = JSON.parse(sessionStorage.getItem('student_key'))
+      // console.log(item_value.picture)
+      setname(item_value.name)
+    }
+
+    profile()
+  }, [])
+
   return (
     <>
       <Userheader />
@@ -10,7 +24,7 @@ export const Dashboard = () => {
         <h2 class="mb-4 text-2xl text-center font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
           Welcome Back{" "}
           <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
-            Kishore
+            {name}
           </span>
           👋
         </h2>

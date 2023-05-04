@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 export const Login = () => {
-
-
   const navigate = useNavigate();
 
   // tokendata
@@ -24,6 +22,42 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  //  User Login  request
+
+  const UserLogin = (event) => {
+    fetch(
+      "https://localhost:7047/api/Hosteller/user/login?email=" + event.email,
+      {
+        method: "get",
+
+        headers: {
+          "Content-type": "application/JSON",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error("Server responds with error!");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data["detail"]) {
+          alert(data["detail"]);
+        } else {
+          
+          userprofile.userid = data["hostellerId"];
+          userprofile.email = data["email"];
+          userprofile.name = data["name"];
+          userprofile.picture = event.picture;
+          userprofile.acc_type = "student";
+
+          sessionStorage.setItem("student_key", JSON.stringify(userprofile));
+          navigate("/user/dashboard")
+        }
+      });
+  };
+
   // Admin login request
 
   const AdminLogin = (event) => {
@@ -32,10 +66,10 @@ export const Login = () => {
     fetch("https://localhost:7047/api/User/login", {
       method: "post",
       body: JSON.stringify({
-        UserName:"",
+        UserName: "",
         UserEmail: email,
         Password: password,
-        UserType:""
+        UserType: "",
       }),
       headers: {
         "Content-type": "application/JSON",
@@ -48,33 +82,27 @@ export const Login = () => {
         if (res.status == 400) {
           alert("Server responds with error!");
         }
-       
+
         return res.json();
       })
       .then((data) => {
-        if(data["detail"]) {
+        if (data["detail"]) {
           alert("Invalid Login");
-        }
-        else {
-          userprofile.userid=data["userID"];
-          userprofile.email=data["userEmail"];
-          userprofile.name=data["userName"];
-          userprofile.acc_type=data["userType"];
+        } else {
+          userprofile.userid = data["userID"];
+          userprofile.email = data["userEmail"];
+          userprofile.name = data["userName"];
+          userprofile.acc_type = data["userType"];
 
           sessionStorage.setItem("admin_key", JSON.stringify(userprofile));
 
-          if(data["userType"]==="admin")
-          {
-          navigate("/admin/dashboard")
+          if (data["userType"] === "admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/");
           }
-          else
-          {
-            navigate("/")
-          }
-        } 
+        }
         console.log(data);
-
-        
       });
   };
 
@@ -91,6 +119,7 @@ export const Login = () => {
             },
           }
         );
+        UserLogin(data.data);
 
         console.log(data);
       } catch (error) {
@@ -106,48 +135,53 @@ export const Login = () => {
       // console.log(credentialResponse);
       var decoded = jwt_decode(credentialResponse.credential);
       console.log(decoded);
+      UserLogin(decoded);
     },
     onError: () => {
       console.log("Login Failed");
     },
   });
 
-  if (sessionStorage.getItem("admin_key")) return <Navigate to="/admin/dashboard" />;
+  if (sessionStorage.getItem("admin_key"))
+    return <Navigate to="/admin/dashboard" />;
+
+    if (sessionStorage.getItem("student_key"))
+    return <Navigate to="/user/dashboard" />;
 
 
   return (
     <>
       <div
-        class="bg-cover"
+        className="bg-cover"
         style={{
           backgroundImage:
             'url("https://images.pexels.com/photos/235985/pexels-photo-235985.jpeg?cs=srgb&dl=pexels-pixabay-235985.jpg&fm=jpg")',
         }}
       >
         <section className="font-sans">
-          <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <a
               href="#"
-              class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+              className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
               <img
-                class="w-8 h-8 mr-2"
+                className="w-8 h-8 mr-2"
                 src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
                 alt="logo"
               />
               Flowbite
             </a>
-            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white font-sans">
+            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white font-sans">
                   Sign in to your account
                 </h1>
-                <div class="space-y-4 md:space-y-6">
+                <div className="space-y-4 md:space-y-6">
                   <form onSubmit={AdminLogin}>
                     <div>
                       <label
-                        for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        htmlFor="email"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Your email
                       </label>
@@ -156,15 +190,15 @@ export const Login = () => {
                         name="email"
                         onChange={(e) => setEmail(e.target.value)}
                         id="email"
-                        class="bg-gray-50 border border-gray-600 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-600 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="name@company.com"
-                        required=""
+                        required
                       />
                     </div>
                     <div>
                       <label
-                        for="password"
-                        class="mt-3 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        htmlFor="password"
+                        className="mt-3 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Password
                       </label>
@@ -174,29 +208,29 @@ export const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         id="password"
                         placeholder="••••••••"
-                        class="bg-gray-50 border border-gray-600 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required=""
+                        className="bg-gray-50 border border-gray-600 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required
                       />
                     </div>
 
                     <button
                       type="submit"
-                      class="mt-4 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="mt-4 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
                       Sign in
                     </button>
                   </form>
                   <button
                     onClick={login}
-                    class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blredue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                    className="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blredue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   >
                     Sign In with Google
                   </button>
-                  <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don’t have an account yet?{" "}
                     <a
-                      href="#"
-                      class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                      onClick={() =>  navigate("/register")}
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                     >
                       Sign up
                     </a>

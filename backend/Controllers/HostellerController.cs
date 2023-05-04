@@ -71,7 +71,7 @@ namespace HostelManagement.Controllers
 
 
         // POST: api/Hosteller/user/login
-        [HttpPost("user/login")]
+        [HttpGet("user/login")]
         public async Task<ActionResult<HostellerModel>> checkemailbyuser(string email)
         {
 
@@ -92,6 +92,10 @@ namespace HostelManagement.Controllers
 
             }
           
+            if(hosteller == null)
+            {
+                return Problem("User Doesnt Exsist");
+            }
           
 
             return hosteller;

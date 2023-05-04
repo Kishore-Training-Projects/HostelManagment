@@ -1,20 +1,51 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+
 
 const navigation = [
-  { name: 'Dashboard', href: '/user/dashboard', current: false },
-  { name: 'Complaint', href: '/user/complaint', current: false },
-  { name: 'Profile', href: '/user/profile', current: false },
-  { name: 'Room', href: '/user/room', current: false },
-
-]
+  { name: "Dashboard", href: "/user/dashboard", current: false },
+  { name: "Complaint", href: "/user/complaint", current: false },
+  { name: "Profile", href: "/user/profile", current: false },
+  { name: "Room", href: "/user/room", current: false },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Userheader() {
+  const [profile, setProfile] = useState({})
+
+
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const profile = () => {
+      var item_value = JSON.parse(sessionStorage.getItem('student_key'))
+      // console.log(item_value.picture)
+      setProfile(item_value)
+    }
+
+    profile()
+  }, [])
+
+  const navchanger = (link) => {
+    navigate(link);
+  };
+
+  const signout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
+
+  if (!sessionStorage.getItem("student_key")) return <Navigate to="/" />;
+
   return (
     <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-50">
       {({ open }) => (
@@ -48,17 +79,19 @@ export default function Userheader() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <button
                         key={item.name}
-                        href={item.href}
+                        onClick={() => navchanger(item.href)}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -79,8 +112,8 @@ export default function Userheader() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={profile.picture}      
+                                          alt=""
                       />
                     </Menu.Button>
                   </div>
@@ -94,13 +127,24 @@ export default function Userheader() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      
-                      
+                      <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 dark:text-white">
+                          {profile.name}
+                        </span>
+                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                        {profile.email}
+
+                        </span>
+                      </div>
+
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={() => signout()}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Sign out
                           </a>
@@ -119,12 +163,14 @@ export default function Userheader() {
                 <Disclosure.Button
                   key={item.name}
                   as="a"
-                  href={item.href}
+                  onClick={() => navchanger(item.href)}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -134,5 +180,5 @@ export default function Userheader() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

@@ -38,7 +38,7 @@ export const Register = () => {
         alert("Unable to connect Backend");
       })
       .then((res) => {
-        if (res.status >= 400) {
+        if (res.status == 400) {
           throw new Error("Server responds with error!");
         }
         return res.json();
