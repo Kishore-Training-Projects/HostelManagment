@@ -53,7 +53,7 @@ namespace HostelManagement.Controllers
         // PUT: api/Room/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoomModel(int id, RoomModel roomModel)
+        public async Task<ActionResult<RoomModel>> PutRoomModel(int id, RoomModel roomModel)
         {
             if (id != roomModel.RoomNo)
             {
@@ -78,7 +78,7 @@ namespace HostelManagement.Controllers
                 }
             }
 
-            return NoContent();
+            return await _context.RoomModel.FindAsync(id);
         }
 
         // POST: api/Room

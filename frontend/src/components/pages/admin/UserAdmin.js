@@ -17,6 +17,47 @@ export const UserAdmin = () => {
 
   const [user, setuser] = useState([]);
 
+  // delete user function
+
+  const delete_user = (id) => {
+
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Do you want to delete this record !!💀") == true) {
+      
+      fetch("https://localhost:7047/api/User/" + id, {
+        method: "delete",
+        headers: {
+          "Content-type": "application/JSON",
+        },
+      })
+        .catch((error) => {
+          alert("Unable to connect Backend");
+        })
+        .then((res) => {
+          if (res.status == 400) {
+            throw new Error("Server responds with error!");
+          }
+          if (res.status == 204) {
+            fetchData();
+          }
+          if (res.status == 200) {
+            fetchData();
+          }
+          return res.json();
+        })
+  
+        .then((data) => {
+          if (data["detail"]) {
+            alert("Error Cant Delete");
+          }
+        });
+    };
+    }
+
+  // end of delete user
+
+
+
   // fetch edit user data
     const fetchuserdata = (id) => {
       fetch("https://localhost:7047/api/User/" + id)
@@ -171,7 +212,8 @@ export const UserAdmin = () => {
             </button>
 
             <button
-              type="button"
+                           onClick={() => {delete_user(user.userID)}}
+
               class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
             >
               <svg
