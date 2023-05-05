@@ -3,20 +3,19 @@ import Managerheader from "../../layout/header/managerheader";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
 
 
 
-export const HostellerRoomManager = () => {
+export const HostellerManager = () => {
   const navigate = useNavigate();
 
     const [hosteller,setHosteller] = useState();
 
-    const [queryParameters] = useSearchParams()
 
   // useeffect to get data
   useEffect(() => {
-    
+ 
+
     fetchData();
   }, []);
 
@@ -25,10 +24,10 @@ export const HostellerRoomManager = () => {
  const delete_hosteller = (id) => {
 
   // eslint-disable-next-line no-restricted-globals
-  if (confirm("Do you want this Hosteller to room !!💀") == true) {
+  if (confirm("Do you want to delete this record !!💀") == true) {
     
-    fetch("https://localhost:7047/api/Hosteller/addroom?hosteller="+id+"&roomNo=" + queryParameters.get("id"), {
-      method: "post",
+    fetch("https://localhost:7047/api/Hosteller/" + id, {
+      method: "delete",
       headers: {
         "Content-type": "application/JSON",
       },
@@ -53,10 +52,6 @@ export const HostellerRoomManager = () => {
         if (data["detail"]) {
           alert("Error Cant delete");
         }
-        else
-        {
-            navigate("/manager/room/details?id="+queryParameters.get("id"))
-        }
       });
   };
   }
@@ -69,7 +64,7 @@ export const HostellerRoomManager = () => {
 
     // fetch hosteller all data
     const fetchData = (id) => {
-      fetch("https://localhost:7047/api/Hosteller/new")
+      fetch("https://localhost:7047/api/Hosteller")
         .then((response) => {
           return response.json();
         })
@@ -120,13 +115,25 @@ export const HostellerRoomManager = () => {
                         <td class="px-4 py-3 border">{user.address}</td>
 
                         <td class="px-4 py-3 flex items-center justify-end">
-                         
                           <button
-                           onClick={() => {delete_hosteller(user.hostellerId)}}
-                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-sm text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                            type="button"
+                            onClick={()=>navigate("/manager/hosteller/details?id="+user.hostellerId)}
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
-                                Add room
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              class="w-4 h-4"
+                            >
+                              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                              <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                            </svg>
+
+                            <span class="sr-only">Icon description</span>
                           </button>
+
+                      
                         </td>
                       </tr>
             </>
@@ -151,7 +158,7 @@ export const HostellerRoomManager = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="/mamanger/dashboard"
+                href="#"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -181,52 +188,11 @@ export const HostellerRoomManager = () => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <a  class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
-                  Room 
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="flex items-center">
-                <svg
-                  aria-hidden="true"
-                  class="w-6 h-6 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                <a href={"/manager/room/details?id="+queryParameters.get("id")} class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
-                  Details
-                </a>
-              </div>
-            </li>
-            <li>
-              <div class="flex items-center">
-                <svg
-                  aria-hidden="true"
-                  class="w-6 h-6 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
                 <a class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
-                  new
+                  Hosteller
                 </a>
               </div>
             </li>
-            
           </ol>
         </nav>
 
@@ -273,7 +239,17 @@ export const HostellerRoomManager = () => {
                     </form>
                   </div>
                   <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    
+                    <button
+                      type="button"
+                      onClick={() => navigate("/manager/hosteller/new")}
+                      class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2">
+  <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+</svg>
+
+                      Add Hosteller
+                    </button>
                     <div class="flex items-center space-x-3 w-full md:w-auto">
                       
                     </div>

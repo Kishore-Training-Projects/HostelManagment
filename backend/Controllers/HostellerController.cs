@@ -65,13 +65,13 @@ namespace HostelManagement.Controllers
 
 
         [HttpGet("room/{id}")]
-        public async Task<ActionResult<HostellerModel>> GetHostellerofroom(int id)
+        public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellerofroom(int id)
         {
             if (_context.HostellerModel == null)
             {
                 return NotFound();
             }
-            var hostellerModel = await _context.HostellerModel.Where(x => x.Room.RoomNo == id).FirstOrDefaultAsync() ;
+            var hostellerModel = await _context.HostellerModel.Where(x => x.Room.RoomNo == id).ToListAsync() ;
 
             if (hostellerModel == null)
             {
@@ -116,8 +116,8 @@ namespace HostelManagement.Controllers
 
 
         // POST: api/Hosteller
-        [HttpPost("/addroom/")]
-        public async Task<ActionResult<HostellerModel>> PostHostellerModelss(int value1 , int value2)
+        [HttpPost("addroom/")]
+        public async Task<ActionResult<HostellerModel>> PostHostellerModelss(int hosteller , int roomNo)
         {
 
 
@@ -125,14 +125,15 @@ namespace HostelManagement.Controllers
             {
                 return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
             }
-            HostellerModel hos = await _context.HostellerModel.FindAsync(value1);
-            RoomModel room = await _context.RoomModel.FindAsync(value2);
+            HostellerModel hos = await _context.HostellerModel.FindAsync(hosteller);
+            RoomModel room = await _context.RoomModel.FindAsync(roomNo);
+            room.Occupied = room.Occupied + 1;
             hos.Room = room;
             _context.Entry(hos).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetHostellerModel", new { id = value1 }, hos);
+            return CreatedAtAction("GetHostellerModel", new { id = hosteller }, hos);
         }
 
 

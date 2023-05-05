@@ -6,12 +6,11 @@ import { useSearchParams } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
-
 export const RoomDetailManager = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [room, setRoom] = useState();
-  const [hosteller, setHosteller] = useState();
+  const [hosteller, setHosteller] = useState([]);
 
   const [queryParameters] = useSearchParams();
 
@@ -50,63 +49,48 @@ export const RoomDetailManager = () => {
   };
 
   const renderTable = () => {
+    console.log("hi")
     if (Array.isArray(hosteller)) {
-      return hosteller.map((com) => {
-        return <>
-          <tr class="border-b dark:border-gray-700">
-                        <td class="w-4 p-4 border">
-                          <div class="flex items-center">
-                            <input
-                              id="checkbox-table-1"
-                              type="checkbox"
-                              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                            <label for="checkbox-table-1" class="sr-only">
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-                        <th
-                          scope="row"
-                          class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          1
-                        </th>
-                        <td class="px-4 py-3 border">{com.name}</td>
-                        <td class="px-4 py-3 border">{com.gender}</td>
-                        <td class="px-4 py-3 border">{com.age}</td>
-                        <td class="px-4 py-3 border">
-                          {com.occupation}
-                        </td>
+        console.log("h1")
 
-                        <td class="px-4 py-3 flex items-center justify-center">
-                          <button
-                            type="button"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke-width="1.5"
-                              stroke="currentColor"
-                              class="w-5 h-5"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                              />
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-        </>;
+      return hosteller.map((com) => {
+        console.log("h2")
+
+        return (
+          <>
+            <tr class="border-b dark:border-gray-700">
+              <td class="w-4 p-4 border">
+                <div class="flex items-center">
+                  <input
+                    id="checkbox-table-1"
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label for="checkbox-table-1" class="sr-only">
+                    checkbox
+                  </label>
+                </div>
+              </td>
+              
+              <td class="px-4 py-3 border">{com.name}</td>
+              <td class="px-4 py-3 border">{com.gender}</td>
+              <td class="px-4 py-3 border">{com.age}</td>
+              <td class="px-4 py-3 border">{com.mobile}</td>
+
+              <td class="px-4 py-3 border">{com.occupation}</td>
+
+              <td class="px-4 py-3 flex items-center justify-center">
+                <button
+                  type="button"
+                  class="text-white uppercase bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                 
+                   remove
+                </button>
+              </td>
+            </tr>
+          </>
+        );
       });
     }
   };
@@ -155,7 +139,7 @@ export const RoomDetailManager = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="#"
+                href="/manager/dashboard"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -185,7 +169,7 @@ export const RoomDetailManager = () => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <a class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                <a href="/manager/room" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
                   Room
                 </a>
               </div>
@@ -278,20 +262,22 @@ export const RoomDetailManager = () => {
                     </form>
                   </div>
                   <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"></div>
-                <button
-                      onClick={() => {navigate("/manager/room/new?id="+room.roomNo)}}
-                      class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                  <button
+                    onClick={() => {
+                      navigate("/manager/room/new?id=" + room.roomNo);
+                    }}
+                    class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="w-4 h-4 mr-2"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-4 h-4 mr-2"
-                      >
-                        <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
-                      </svg>
-                      Add Roomates
-                    </button>
+                      <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+                    </svg>
+                    Add Roomates
+                  </button>
                 </div>
                 <div class="overflow-x-auto ">
                   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse">
@@ -330,10 +316,7 @@ export const RoomDetailManager = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                    {renderTable()}
-                    
-                    </tbody>
+                    <tbody>{renderTable()}</tbody>
                   </table>
                 </div>
               </div>

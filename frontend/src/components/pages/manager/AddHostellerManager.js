@@ -2,9 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Adminheader from "../../layout/header/adminheader";
+import Managerheader from "../../layout/header/managerheader";
 
-export const AddHostellerAdmin = () => {
+export const AddHostellerManager = () => {
 
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ export const AddHostellerAdmin = () => {
   return (
     <>
 
-    <Adminheader />
+    <Managerheader />
       <div
         class="items-center lg:mx-20 lg:mt-10 mt-6 "
        
@@ -78,7 +78,7 @@ export const AddHostellerAdmin = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="/admin/hosteller"
+                href="/manager/hosteller"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -108,7 +108,7 @@ export const AddHostellerAdmin = () => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <a class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                <a href="/manager/hosteller" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
                   Hosteller
                 </a>
               </div>
@@ -449,7 +449,7 @@ export const AddHostellerAdmin = () => {
                 </button>
                 <button
                   type="submit"
-                  onClick={() => navigate("/manager/hosteller/")}
+                  onClick={() => navigate("/admin/hosteller/")}
                   class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-danger-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   >
                   cancel

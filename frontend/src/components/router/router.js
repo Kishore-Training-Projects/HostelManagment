@@ -26,7 +26,9 @@ import { ComplaintManager } from "../pages/manager/ComplaintManager";
 import { RoomManager } from "../pages/manager/RoomManager";
 import { RoomDetailManager } from "../pages/manager/RoomDetailManager";
 import { HostellerRoomManager } from "../pages/manager/HostellerRoomManager";
-
+import { HostellerManager } from "../pages/manager/HostellerManager";
+import { AddHostellerManager } from "../pages/manager/AddHostellerManager";
+import { ViewHostellerManager } from "../pages/manager/ViewHostellerManager";
 
 function Router() {
   return (
@@ -113,6 +115,18 @@ const routerList = [
   {
     path: "/manager/room/new",
     element: <HostellerRoomManager />,
+  },
+  {
+    path: "/manager/hosteller",
+    element: <HostellerManager />,
+  },
+  {
+    path: "/manager/hosteller/new",
+    element: <AddHostellerManager />,
+  },
+  {
+    path: "/manager/hosteller/details",
+    element: <ViewHostellerManager />,
   },
 ];
 

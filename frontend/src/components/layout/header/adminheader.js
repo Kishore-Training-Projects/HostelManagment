@@ -3,6 +3,9 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react";
+import { useState } from "react";
+
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', current: false },
@@ -17,6 +20,7 @@ function classNames(...classes) {
 }
 
 export default function Adminheader() {
+  const [profile, setProfile] = useState({})
 
   const navigate = useNavigate()
 
@@ -29,6 +33,15 @@ export default function Adminheader() {
     navigate('/login')
   }
 
+  useEffect(() => {
+    const profile = () => {
+      var item_value = JSON.parse(sessionStorage.getItem('admin_key'))
+      // console.log(item_value.picture)
+      setProfile(item_value)
+    }
+
+    profile()
+  }, [])
 
   if (!sessionStorage.getItem("admin_key")) return <Navigate to="/" />;
 
@@ -111,7 +124,15 @@ export default function Adminheader() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      
+                    <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 dark:text-white">
+                          {profile.name}
+                        </span>
+                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                        {profile.email}
+
+                        </span>
+                      </div>
                       
                       <Menu.Item>
                         {({ active }) => (

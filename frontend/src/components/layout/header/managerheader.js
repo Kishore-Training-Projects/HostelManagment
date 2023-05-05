@@ -3,13 +3,16 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react";
+import { useState } from "react";
+
 
 const navigation = [
   { name: 'Dashboard', href: '/manager/dashboard', current: false },
   { name: 'Complaint', href: '/manager/complaint', current: false },
   { name: 'Rooms', href: '/manager/room', current: false },
+  { name: 'Hostellers', href: '/manager/hosteller', current: false },
   { name: 'Users', href: '/admin/users', current: false },
-  { name: 'Hostellers', href: '/admin/hosteller', current: false },
 ]
 
 function classNames(...classes) {
@@ -17,12 +20,23 @@ function classNames(...classes) {
 }
 
 export default function Managerheader() {
+  const [profile, setProfile] = useState({})
 
   const navigate = useNavigate()
 
   const navchanger = (link) => {
     navigate(link)
   }
+
+    useEffect(() => {
+    const profile = () => {
+      var item_value = JSON.parse(sessionStorage.getItem('manager_key'))
+      // console.log(item_value.picture)
+      setProfile(item_value)
+    }
+
+    profile()
+  }, [])
 
   const signout = () => {
     sessionStorage.clear()
@@ -111,7 +125,15 @@ export default function Managerheader() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      
+                      <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 dark:text-white">
+                          {profile.name}
+                        </span>
+                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                        {profile.email}
+
+                        </span>
+                      </div>
                       
                       <Menu.Item>
                         {({ active }) => (

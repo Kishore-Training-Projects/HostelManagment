@@ -5,7 +5,7 @@ import Managerheader from "../../layout/header/managerheader";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export const RoomManager = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
   const [EditModal, setEditModal] = useState(false);
@@ -185,16 +185,24 @@ export const RoomManager = () => {
                 {com.roomNo}
               </th>
               <td class="px-4 py-3 border">{com.roomType}</td>
-              <td class="px-4 py-3 border">{com.seater}</td>
-              <td class="px-4 py-3 border">{com.occupied}</td>
-              
+              <td class="px-4 py-3 border text-center justify-center items-center">{com.seater}</td>
+              <td class="px-4 py-3 border text-center justify-center items-center">
+              <span class="bg-red-100 text-red-800  text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                {com.occupied}
+                </span>
+                </td>
+              <td class="px-4 py-3 border text-center justify-center items-center">
+                <span class="bg-green-100 text-green-800  text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                {com.seater-com.occupied}
+                </span>
+              </td>
 
               <td class="px-4 py-3 flex items-center justify-center">
                 <button
                   type="button"
                   onClick={() => {
-                        navigate("/manager/room/details?id="+com.roomNo)
-                }}
+                    navigate("/manager/room/details?id=" + com.roomNo);
+                  }}
                   class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   <svg
@@ -354,7 +362,9 @@ export const RoomManager = () => {
                         <th scope="col" class="px-4 py-3 border">
                           Room Occupied
                         </th>
-                   
+                        <th scope="col" class="px-4 py-3 border">
+                          Room vacancy
+                        </th>
 
                         <th scope="col" class="px-4 py-3 border">
                           Actions
