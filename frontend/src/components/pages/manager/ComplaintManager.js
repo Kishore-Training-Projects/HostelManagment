@@ -1,22 +1,18 @@
 import React from "react";
-import Adminheader from "../../layout/header/adminheader";
+import Managerheader from "../../layout/header/managerheader";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export const ComplaintAdmin = () => {
+export const ComplaintManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [EditModal, setEditModal] = useState(false);
   const [complaint, setComplaint] = useState([]);
   const [individual, setIndividual] = useState({});
   var datas = JSON.parse(sessionStorage.getItem("student_key"));
 
-
   // useeffect to get data
   useEffect(() => {
- 
-      fetchData();
-
-
+    fetchData();
   }, []);
 
   // fetch complaint
@@ -51,9 +47,6 @@ export const ComplaintAdmin = () => {
   };
 
   //    end of getch individual complaint
-
-
-
 
   // submit edit form data
 
@@ -90,10 +83,8 @@ export const ComplaintAdmin = () => {
   // delete complaint
 
   const delete_complaint = (id) => {
-
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Do you want to delete this record !!💀") == true) {
-      
       fetch("https://localhost:7047/api/Complaint/" + id, {
         method: "delete",
         headers: {
@@ -115,14 +106,14 @@ export const ComplaintAdmin = () => {
           }
           return res.json();
         })
-  
+
         .then((data) => {
           if (data["detail"]) {
             alert("Error Cant Insert");
           }
         });
-    };
     }
+  };
 
   // end of delete complaint
 
@@ -133,13 +124,26 @@ export const ComplaintAdmin = () => {
       return complaint.map((com) => {
         return (
           <>
-            <div className={com.status=="initiated"?"bg-white rounded-lg shadow-md p-6 border-2 border-blue-500":"bg-white rounded-lg shadow-md p-6 border-2 border-green-500"}>
-              <h3 className="font-semibold text-lg mb-2 text-blue-500">
+            <div
+              onClick={() => fetchComplaintData(com.complaintID)}
+              className={
+                com.status == "initiated"
+                  ? "bg-white hover:shadow-2xl rounded-lg shadow-md p-6 border-2 border-red-500"
+                  : "bg-white hover:shadow-2xl rounded-lg shadow-md p-6 border-2 border-green-500"
+              }
+            >
+              <h3 className="font-bold text-xl uppercase mb-2 text-blue-500">
                 {com.complaintType}{" "}
               </h3>
               <div className="flex items-center mb-2">
-                <div className="px-2 py-1 bg-red-200 text-red-800 text-xs font-semibold rounded-full uppercase">
-                  Urgent
+                <div
+                  className={
+                    com.status == "initiated"
+                      ? "px-1 py-1 bg-red-200 text-red-800 text-xs font-semibold rounded-sm uppercase"
+                      : "px-1 py-1 bg-green-200 text-green-800 text-xs font-semibold rounded-sm uppercase"
+                  }
+                >
+                  {com.status == "initiated" ? "⚠ Important" : "✔ Completed"}
                 </div>
               </div>
               <p className="text-gray-600 text-sm mb-4">{com.details}</p>
@@ -158,50 +162,22 @@ export const ComplaintAdmin = () => {
                   />
                 </svg>
 
-                <span className="text-gray-600 text-sm ml-2">
+                <span className="text-gray-600 text-xs ml-2">
                   {" "}
                   {com.createdDate}
                 </span>
               </div>
               <div className="flex items-center mt-2">
-                <div className= {com.status=="initiated"?"px-2 py-1 bg-yellow-200 text-yellow-800 text-xs font-semibold rounded-full uppercase mr-2":"px-2 py-1 bg-green-200 text-green-800 text-xs font-semibold rounded-full uppercase mr-2"}>
+                <div
+                  className={
+                    com.status == "initiated"
+                      ? "px-2 py-1 bg-yellow-200 text-yellow-800 text-xs font-semibold rounded-full uppercase mr-2"
+                      : "px-2 py-1 bg-green-200 text-green-800 text-xs font-semibold rounded-full uppercase mr-2"
+                  }
+                >
                   {com.status}
                 </div>
-                <button
-                  onClick={() => fetchComplaintData(com.complaintID)}
-                  className="mr-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 ml-auto focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs p-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-                  </svg>
-                  <span className="sr-only">Icon description</span>
-                </button>
-                <button
-                  onClick={() => {
-                    delete_complaint(com.complaintID);
-                  }}
-                  className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs p-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:red-blue-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    />
-                  </svg>
-                </button>
+                <p className="text-sm">{com.hosteller.name}</p>
               </div>
             </div>
           </>
@@ -209,15 +185,13 @@ export const ComplaintAdmin = () => {
       });
     }
   };
-    return(
-        <>
-        <Adminheader />
+  return (
+    <>
+      <Managerheader />
       <div className="container items-center lg:mx-20 lg:mt-10 mt-6 ">
+        {/* breadcrumb */}
 
-
-      {/* breadcrumb */}
-
-      <nav
+        <nav
           class="flex px-3 py-2 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
           aria-label="Breadcrumb"
         >
@@ -326,7 +300,6 @@ export const ComplaintAdmin = () => {
               </svg>
               Search
             </button>
-           
           </div>
         </div>
 
@@ -339,7 +312,7 @@ export const ComplaintAdmin = () => {
         </div>
         {/* end of card design */}
 
-      {/* Edit Modal  */}
+        {/* Edit Modal  */}
         {EditModal ? (
           <>
             <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -368,7 +341,7 @@ export const ComplaintAdmin = () => {
                   </button>
                   <div className="px-6 py-6 lg:px-8">
                     <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                      Edit Complaint
+                      Update status of Complaint
                     </h3>
 
                     <form className="space-y-6" onSubmit={submit_edit_form}>
@@ -380,20 +353,27 @@ export const ComplaintAdmin = () => {
                           name="complaintType"
                           value={individual.complaintType}
                           defaultChecked={individual.complaintType}
-                          onChange={(e) =>
-                            setIndividual({
-                              ...individual,
-                              [e.target.name]: e.target.value,
-                            })
-                          }
+                          disabled
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         >
                           <option>select Category</option>
-                          <option value="electrical">electrical</option>
-                          <option value="water">water</option>
-                          <option value="cleaning">Cleaning</option>
-                          <option value="wifi">wifi</option>
+                          <option value="electrical Issue">electrical</option>
+                          <option value="Water Issue">water</option>
+                          <option value="Cleaning Issue">Cleaning</option>
+                          <option value="Wifi Issue">wifi</option>
                         </select>
+                      </div>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          Created Date :
+                        </label>
+                        <input
+                          type="text"
+                          name="createdDate"
+                          value={individual.createdDate}
+                          disabled
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        />
                       </div>
                       <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -402,12 +382,7 @@ export const ComplaintAdmin = () => {
                         <textarea
                           name="details"
                           value={individual.details}
-                          onChange={(e) =>
-                            setIndividual({
-                              ...individual,
-                              [e.target.name]: e.target.value,
-                            })
-                          }
+                          disabled
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         />
                       </div>
@@ -457,10 +432,7 @@ export const ComplaintAdmin = () => {
         ) : null}
 
         {/* end of modal  */}
-
-
-        
       </div>
-        </>
-    );
-}
+    </>
+  );
+};

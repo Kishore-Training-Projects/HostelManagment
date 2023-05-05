@@ -40,7 +40,7 @@ namespace HostelManagement.Controllers
           {
               return NotFound();
           }
-            var complaintModel = await _context.ComplaintModel.FindAsync(id);
+            var complaintModel = await _context.ComplaintModel.Include(x=>x.hosteller).Where(x => x.ComplaintID == id).FirstOrDefaultAsync();
 
             if (complaintModel == null)
             {

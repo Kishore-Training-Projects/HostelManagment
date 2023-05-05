@@ -1,74 +1,24 @@
 import React from "react";
-import Adminheader from "../../layout/header/adminheader";
-import { useEffect } from "react";
+import Managerheader from "../../layout/header/managerheader";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import { useNavigate } from "react-router-dom";
 
 
+export const RoomDetailManager = () => {
+    const navigate = useNavigate();
 
-export const HostellerAdmin = () => {
-  const navigate = useNavigate();
+  const [room, setRoom] = useState();
+  const [hosteller, setHosteller] = useState();
 
-    const [hosteller,setHosteller] = useState();
+  const [queryParameters] = useSearchParams();
 
-
-  // useeffect to get data
+  // get room details
   useEffect(() => {
-    var item_value;
-    const profiles = () => {
-      item_value = JSON.parse(sessionStorage.getItem("student_key"));
-      
-    };
-
-    fetchData();
-  }, []);
-
- // delete Hosteller
-
- const delete_hosteller = (id) => {
-
-  // eslint-disable-next-line no-restricted-globals
-  if (confirm("Do you want to delete this record !!💀") == true) {
-    
-    fetch("https://localhost:7047/api/Hosteller/" + id, {
-      method: "delete",
-      headers: {
-        "Content-type": "application/JSON",
-      },
-    })
-      .catch((error) => {
-        alert("Unable to connect Backend");
-      })
-      .then((res) => {
-        if (res.status == 400) {
-          throw new Error("Server responds with error!");
-        }
-        if (res.status == 204) {
-          fetchData();
-        }
-        if (res.status == 200) {
-          fetchData();
-        }
-        return res.json();
-      })
-
-      .then((data) => {
-        if (data["detail"]) {
-          alert("Error Cant delete");
-        }
-      });
-  };
-  }
-
-// end of delete Hosteller
-
-  
-  
-
-
-    // fetch hosteller all data
     const fetchData = (id) => {
-      fetch("https://localhost:7047/api/Hosteller")
+      fetch("https://localhost:7047/api/room/" + id)
         .then((response) => {
           return response.json();
         })
@@ -76,23 +26,34 @@ export const HostellerAdmin = () => {
           alert("Unable to connect Backend");
         })
         .then((data) => {
-          setHosteller(data);
-          console.log(data);
+          setRoom(data);
         });
     };
 
-    //end of fetch hosteller all data
+    fetchData(queryParameters.get("id"));
+    fetchhostellerData(queryParameters.get("id"));
+  }, []);
 
+  // get userdetails of that room
 
+  const fetchhostellerData = (id) => {
+    fetch("https://localhost:7047/api/Hosteller/room/" + id)
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((data) => {
+        setHosteller(data);
+      });
+  };
 
-    // render table data
-    
-    const renderTable = () => {
-      if (Array.isArray(hosteller)) {
-        return hosteller.map((user) => {
-          return (
-            <>
-              <tr class="border-b dark:border-gray-700">
+  const renderTable = () => {
+    if (Array.isArray(hosteller)) {
+      return hosteller.map((com) => {
+        return <>
+          <tr class="border-b dark:border-gray-700">
                         <td class="w-4 p-4 border">
                           <div class="flex items-center">
                             <input
@@ -109,69 +70,82 @@ export const HostellerAdmin = () => {
                           scope="row"
                           class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          
-                          {user.name}
+                          1
                         </th>
-                        <td class="px-4 py-3 border">{user.gender}</td>
-                        <td class="px-4 py-3 border">{user.age}</td>
-                        <td class="px-4 py-3 border">{user.email}</td>
-                        <td class="px-4 py-3 border">{user.mobile}</td>
-                        <td class="px-4 py-3 border">{user.address}</td>
+                        <td class="px-4 py-3 border">{com.name}</td>
+                        <td class="px-4 py-3 border">{com.gender}</td>
+                        <td class="px-4 py-3 border">{com.age}</td>
+                        <td class="px-4 py-3 border">
+                          {com.occupation}
+                        </td>
 
-                        <td class="px-4 py-3 flex items-center justify-end">
+                        <td class="px-4 py-3 flex items-center justify-center">
                           <button
                             type="button"
-                            onClick={()=>navigate("/admin/hosteller/details?id="+user.hostellerId)}
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
                               viewBox="0 0 24 24"
-                              fill="currentColor"
-                              class="w-4 h-4"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-5 h-5"
                             >
-                              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                              <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-                            </svg>
-
-                            <span class="sr-only">Icon description</span>
-                          </button>
-
-                          <button
-                           onClick={() => {delete_hosteller(user.hostellerId)}}
-                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              class="w-4 h-4"
-                            >
-                              <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z" />
                               <path
-                                fill-rule="evenodd"
-                                d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087zm6.133 2.845a.75.75 0 011.06 0l1.72 1.72 1.72-1.72a.75.75 0 111.06 1.06l-1.72 1.72 1.72 1.72a.75.75 0 11-1.06 1.06L12 15.685l-1.72 1.72a.75.75 0 11-1.06-1.06l1.72-1.72-1.72-1.72a.75.75 0 010-1.06z"
-                                clip-rule="evenodd"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                              />
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               />
                             </svg>
-
-                            <span class="sr-only">Icon description</span>
                           </button>
                         </td>
                       </tr>
-            </>
-          );
-        });
-      }
-    };
+        </>;
+      });
+    }
+  };
 
-    // end of render table data
+  const renderroomtable = () => {
+    if (room) {
+      return (
+        <>
+          <tbody className="">
+            <tr>
+              <th className="border ">Room Type:</th>
+              <td class="px-4 py-3 border text-center">
+                {room.roomType ? room.roomType : ""}
+              </td>
+            </tr>
+            <tr>
+              <th className="border ">Room Seats:</th>
+              <td class="px-4 py-3 border text-center">{room.seater}</td>
+            </tr>
+            <tr>
+              <th className="border ">Room Occupied:</th>
+              <td class="px-4 py-3 border text-center">{room.occupied}</td>
+            </tr>
+            <tr>
+              <th className="border ">Room Rent:</th>
+              <td class="px-4 py-3 border text-center">
+                {room.rent ? room.rent : ""}
+              </td>
+            </tr>
+          </tbody>
+        </>
+      );
+    }
+  };
 
   return (
     <>
-      <Adminheader />
-
-      <div className="items-center lg:mx-20 lg:mt-10 mt-6 ">
+      <Managerheader />
+      <div className="h-full items-center lg:mx-8 lg:mb-10  lg:mt-10 mt-6 mx-2 ">
         {/* breadcrumb */}
 
         <nav
@@ -212,7 +186,27 @@ export const HostellerAdmin = () => {
                   ></path>
                 </svg>
                 <a class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
-                  Hosteller
+                  Room
+                </a>
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <a class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                  Details
                 </a>
               </div>
             </li>
@@ -220,6 +214,28 @@ export const HostellerAdmin = () => {
         </nav>
 
         {/* end of breadcrumb */}
+
+        {/* room details */}
+
+        <div className="flex flex-wrap -mx-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 p-4">
+            <div className="bg-white rounded-lg shadow-lg border border-1 border-indigo-300 overflow-hidden">
+              <div className="px-6 py-4">
+                <div className="mb-4 px-3 py-3 bg-green-200 text-center text-red-800 text-md font-semibold rounded-sm uppercase">
+                  📂 Room Details
+                </div>
+                <table className="w-full text-sm text-left text-gray-800 dark:text-gray-400 border border-collapse">
+                  {renderroomtable()}
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* end of room details */}
+
+        <h3 className="mt-3 font-bold text-xl mb-2  text-gray-800 ">
+          Room Mates
+        </h3>
 
         {/* data card */}
 
@@ -261,21 +277,21 @@ export const HostellerAdmin = () => {
                       </div>
                     </form>
                   </div>
-                  <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <button
-                      type="button"
+                  <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"></div>
+                <button
+                      onClick={() => {navigate("/manager/room/new?id="+room.roomNo)}}
                       class="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2">
-  <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
-</svg>
-
-                      Add Hosteller
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="w-4 h-4 mr-2"
+                      >
+                        <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+                      </svg>
+                      Add Roomates
                     </button>
-                    <div class="flex items-center space-x-3 w-full md:w-auto">
-                      
-                    </div>
-                  </div>
                 </div>
                 <div class="overflow-x-auto ">
                   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse">
@@ -303,22 +319,19 @@ export const HostellerAdmin = () => {
                           Age
                         </th>
                         <th scope="col" class="px-4 py-3 border">
-                          EmailId
-                        </th>
-                        <th scope="col" class="px-4 py-3 border">
-                          mobile
-                        </th>
-                        <th scope="col" class="px-4 py-3 border">
-                          Address
+                          Contact
                         </th>
 
+                        <th scope="col" class="px-4 py-3 border">
+                          occupation
+                        </th>
                         <th scope="col" class="px-4 py-3 border">
                           Actions
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                     {renderTable()}
+                    {renderTable()}
                     
                     </tbody>
                   </table>
@@ -329,12 +342,6 @@ export const HostellerAdmin = () => {
 
           {/* end table */}
         </div>
-
-
-
-
-
-
       </div>
     </>
   );

@@ -45,7 +45,6 @@ export const Login = () => {
         if (data["detail"]) {
           alert(data["detail"]);
         } else {
-          
           userprofile.userid = data["hostellerId"];
           userprofile.email = data["email"];
           userprofile.name = data["name"];
@@ -53,7 +52,7 @@ export const Login = () => {
           userprofile.acc_type = "student";
 
           sessionStorage.setItem("student_key", JSON.stringify(userprofile));
-          navigate("/user/dashboard")
+          navigate("/user/dashboard");
         }
       });
   };
@@ -94,12 +93,12 @@ export const Login = () => {
           userprofile.name = data["userName"];
           userprofile.acc_type = data["userType"];
 
-          sessionStorage.setItem("admin_key", JSON.stringify(userprofile));
-
           if (data["userType"] === "admin") {
+            sessionStorage.setItem("admin_key", JSON.stringify(userprofile));
             navigate("/admin/dashboard");
           } else {
-            navigate("/");
+            sessionStorage.setItem("manager_key", JSON.stringify(userprofile));
+            navigate("/manager/dashboard");
           }
         }
         console.log(data);
@@ -145,9 +144,10 @@ export const Login = () => {
   if (sessionStorage.getItem("admin_key"))
     return <Navigate to="/admin/dashboard" />;
 
-    if (sessionStorage.getItem("student_key"))
+  if (sessionStorage.getItem("student_key"))
     return <Navigate to="/user/dashboard" />;
-
+  if (sessionStorage.getItem("manager_key"))
+    return <Navigate to="/manager/dashboard" />;
 
   return (
     <>
@@ -229,7 +229,7 @@ export const Login = () => {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don’t have an account yet?{" "}
                     <a
-                      onClick={() =>  navigate("/register")}
+                      onClick={() => navigate("/register")}
                       className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                     >
                       Sign up

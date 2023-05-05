@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Adminheader from "../../layout/header/adminheader";
+import Managerheader from "../../layout/header/managerheader";
 import { useEffect } from "react";
 
-export const AdminDashboard = () => {
+export const DashboardManager = () => {
 
      const [noticecolor, setnoticecolor] = useState([
     "gray",
@@ -68,7 +68,7 @@ export const AdminDashboard = () => {
 
   return (
     <>
-      <Adminheader />
+      <Managerheader />
       <div className="container items-center lg:mx-20 lg:mt-10 mt-6 ">
 
 {/* counter card */}

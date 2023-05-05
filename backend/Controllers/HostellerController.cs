@@ -32,7 +32,19 @@ namespace HostelManagement.Controllers
             return await _context.HostellerModel.Include(x=>x.Room).ToListAsync();
         }
 
-        
+
+        // GET: api/Hosteller
+        [HttpGet("new/")]
+        public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellernew()
+        {
+            if (_context.HostellerModel == null)
+            {
+                return NotFound();
+            }
+            return await _context.HostellerModel.Where(x=>x.Room == null).ToListAsync();
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<HostellerModel>> GetHostellerModel(int id)
         {
@@ -52,14 +64,14 @@ namespace HostelManagement.Controllers
 
 
 
-        [HttpGet("/hi/{id}")]
-        public async Task<ActionResult<HostellerModel>> GetHostellerModelsss(int id)
+        [HttpGet("room/{id}")]
+        public async Task<ActionResult<HostellerModel>> GetHostellerofroom(int id)
         {
             if (_context.HostellerModel == null)
             {
                 return NotFound();
             }
-            var hostellerModel = await _context.HostellerModel.FindAsync(id);
+            var hostellerModel = await _context.HostellerModel.Where(x => x.Room.RoomNo == id).FirstOrDefaultAsync() ;
 
             if (hostellerModel == null)
             {

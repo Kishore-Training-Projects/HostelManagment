@@ -25,7 +25,6 @@ export const Dashboard = () => {
 
   // fet notice data
 
-  // fetch complaint
   const fetchData = () => {
     fetch("https://localhost:7047/api/NoticeBoard")
       .then((response) => {

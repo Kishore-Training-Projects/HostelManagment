@@ -472,11 +472,11 @@ export const Complaint = () => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                           required
                         >
-                          <option>select Category</option>
-                          <option value="electrical">electrical</option>
-                          <option value="water">water</option>
-                          <option value="cleaning">Cleaning</option>
-                          <option value="wifi">wifi</option>
+                           <option>select Category</option>
+                          <option value="electrical Issue">electrical</option>
+                          <option value="Water Issue">water</option>
+                          <option value="Cleaning Issue">Cleaning</option>
+                          <option value="Wifi Issue">wifi</option>
                         </select>
                       </div>
                       <div>
@@ -571,10 +571,10 @@ export const Complaint = () => {
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         >
                           <option>select Category</option>
-                          <option value="electrical">electrical</option>
-                          <option value="water">water</option>
-                          <option value="cleaning">Cleaning</option>
-                          <option value="wifi">wifi</option>
+                          <option value="electrical Issue">electrical</option>
+                          <option value="Water Issue">water</option>
+                          <option value="Cleaning Issue">Cleaning</option>
+                          <option value="Wifi Issue">wifi</option>
                         </select>
                       </div>
                       <div>

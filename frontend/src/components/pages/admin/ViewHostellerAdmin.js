@@ -1,39 +1,39 @@
 import { useState } from "react";
 import React from "react";
-import Userheader from "../../layout/header/userheader";
+import Adminheader from "../../layout/header/adminheader";
 import { User } from "heroicons-react";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+   
 
-export const Profile = () => {
+export const ViewHostellerAdmin = () => {
   const [profile, setProfile] = useState("");
   const [hosteller, setHosteller] = useState({});
 
-  useEffect(() => {
-    var item_value;
-    const profiles = () => {
-      item_value = JSON.parse(sessionStorage.getItem("student_key"));
-      setProfile(item_value);
-      fetchData(item_value.userid);
-    };
+  const [queryParameters] = useSearchParams()
 
-    profiles();
+  useEffect(() => {
+    const fetchData = (id) => {
+        fetch("https://localhost:7047/api/Hosteller/" + id)
+          .then((response) => {
+            return response.json();
+          })
+          .catch((error) => {
+            alert("Unable to connect Backend");
+          })
+          .then((data) => {
+            setHosteller(data);
+            console.log(hosteller);
+          });
+      };
+
+    fetchData(queryParameters.get("id"));
+
   }, []);
 
   // fetch user details
 
-  const fetchData = (id) => {
-    fetch("https://localhost:7047/api/Hosteller/" + id)
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {
-        alert("Unable to connect Backend");
-      })
-      .then((data) => {
-        setHosteller(data);
-        console.log(hosteller);
-      });
-  };
+  
 
 
 
@@ -77,8 +77,8 @@ export const Profile = () => {
   if (hosteller) {
     return (
       <>
-        <Userheader />
-        <div className="h-full items-center lg:mx-8 lg:mb-10  lg:mt-10 mt-6 mx-2 ">
+        <Adminheader />
+        <div className="h-full items-center lg:mx-8 lg:mb-10  lg:mt-8 mt-6 mx-2 ">
           {/* breadcrumb */}
 
           <nav
@@ -88,7 +88,7 @@ export const Profile = () => {
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
               <li class="inline-flex items-center">
                 <a
-                  href="#"
+                  href="/admin/dashboard"
                   class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
                 >
                   <svg
@@ -138,13 +138,13 @@ export const Profile = () => {
               <div class="bg-white rounded-lg shadow-xl border-2 border-gray-200 p-3">
                 <div class="flex items-center justify-center mb-6">
                   <img
-                    src={profile.picture}
+                    src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png"
                     alt="Profile Image"
                     class="w-32 h-32 rounded-full object-cover "
                   />
                 </div>
                 <h3 class="font-semibold text-3xl mb-2 text-center mb-6">
-                  {profile.name}
+              {hosteller.name}
                 </h3>
                 <div class="flex items-center justify-center mb-4">
                   <div class="flex items-center bg-blue-500 text-white hover:text-blue-500 rounded-lg shadow-md p-2 border-2 hover:bg-white border-blue-500 mb-2 w-">
@@ -162,7 +162,7 @@ export const Profile = () => {
                           </svg>
                         </span>
                         <a class="text-lg md:text-xl font-semibold">
-                          {profile.email}
+                          {hosteller.email}
                         </a>
                       </span>
                     </h3>
