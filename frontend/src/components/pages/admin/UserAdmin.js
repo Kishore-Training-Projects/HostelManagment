@@ -5,6 +5,8 @@ import { useEffect } from "react";
 
 export const UserAdmin = () => {
   const [showModal, setShowModal] = useState(false);
+  const [EditModal, setEditModal] = useState(false);
+  const [Editdata , setEditdata] = useState();
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -15,6 +17,60 @@ export const UserAdmin = () => {
 
   const [user, setuser] = useState([]);
 
+  // fetch edit user data
+    const fetchuserdata = (id) => {
+      fetch("https://localhost:7047/api/User/" + id)
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => {
+          alert("Unable to connect Backend");
+        })
+        .then((data) => {
+          setEditdata(data);
+          console.log(data);
+          setEditModal(true);
+        });
+    };
+  
+    //    end of getch edit complaint
+  
+
+      // submit edit form data
+
+  const submit_edit_form = (event) => {
+    event.preventDefault();
+    fetch("https://localhost:7047/api/User/" + Editdata.userID, {
+      method: "put",
+      body: JSON.stringify(Editdata),
+      headers: {
+        "Content-type": "application/JSON",
+      },
+    })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((res) => {
+        if (res.status == 400) {
+          throw new Error("Server responds with error!");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data["detail"]) {
+          alert("Error Cant update");
+        } else {
+          setEditModal(false);
+          fetchData();
+        }
+      });
+  };
+
+  // end of submit edit form data
+
+
+
+  // fetch all user data
   const fetchData = () => {
     fetch("https://localhost:7047/api/User")
       .then((response) => {
@@ -29,13 +85,18 @@ export const UserAdmin = () => {
       });
   };
 
+
+  // useeffect 
+
   useEffect(() => {
     fetchData();
   }, []);
 
 
+  // new user create form
 
-   const submit_form = (event) => {
+
+  const submit_form = (event) => {
     event.preventDefault();
     fetch("https://localhost:7047/api/User", {
       method: "post",
@@ -54,27 +115,14 @@ export const UserAdmin = () => {
         return res.json();
       })
       .then((data) => {
-        if(data["detail"]) {
+        if (data["detail"]) {
           alert("Error Cant Insert");
-        }
-        else {          
+        } else {
           setShowModal(false);
           fetchData();
-        } 
-         
+        }
       });
   };
-
-
-
-
-
-
-
-
-
-
-
 
   const renderTable = () => {
     return user.map((user, i) => {
@@ -99,13 +147,14 @@ export const UserAdmin = () => {
             {user.userName}
           </td>
           <td class="px-4 py-3 border">{user.userEmail}</td>
-          <td class="px-4 py-3 border">{user.password}</td>
 
           <td class="px-4 py-3 border">{user.userType}</td>
+          <td class="px-4 py-3 border">{user.password}</td>
 
           <td class="px-4 py-3 flex items-center  justify-center">
             <button
               type="button"
+              onClick={() => {fetchuserdata(user.userID)}}
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               <svg
@@ -431,6 +480,141 @@ export const UserAdmin = () => {
         ) : null}
 
         {/* end of modal  */}
+
+        {/* Edit modal  */}
+        {EditModal ? (
+          <>
+            <div className="fixed inset-0 z-10 overflow-y-auto">
+              <div
+                className="fixed inset-0 w-full h-full bg-black opacity-40"
+                onClick={() => setEditModal(false)}
+              ></div>
+              <div className="flex items-center min-h-screen px-4 py-8">
+                <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-lg shadow dark:bg-gray-700">
+                  <button
+                    type="button"
+                    className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-toggle="authentication-modal"
+                    onClick={() => setEditModal(false)}
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
+                    </svg>
+                    <span className="sr-only">Close modal</span>
+                  </button>
+                  <div className="px-6 py-6 lg:px-8">
+                    <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                      Edit Room
+                    </h3>
+
+                    <form className="space-y-6" onSubmit={submit_edit_form}>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          UserType :
+                        </label>
+                        <select
+                          name="userType"
+                          value={Editdata.userType}
+                          defaultChecked={Editdata.userType}
+                          onChange={(e) =>
+                            setEditdata({
+                              ...Editdata,
+                              [e.target.name]: e.target.value,
+                            })
+                          }
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          required
+                        >
+                          <option value="manager">Manager</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          username :
+                        </label>
+                        <input
+                          type="text"
+                          name="userEmail"
+                          value={Editdata.userEmail}
+                          onChange={(e) =>
+                            setEditdata({
+                              ...Editdata,
+                              [e.target.name]: e.target.value,
+                            })
+                          }
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          name :
+                        </label>
+                        <input
+                          type="text"
+                          name="userName"
+                          value={Editdata.userName}
+                          onChange={(e) =>
+                            setEditdata({
+                              ...Editdata,
+                              [e.target.name]: e.target.value,
+                            })
+                          }
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                          Password :
+                        </label>
+                        <input
+                          type="password"
+                          name="password"
+                          value={Editdata.password}
+                          onChange={(e) =>
+                            setEditdata({
+                              ...Editdata,
+                              [e.target.name]: e.target.value,
+                            })
+                          }
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          required
+                        />
+                      </div>
+
+                      {/* <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button> */}
+                      <div className="sm:flex sm:flex-row-reverse ">
+                        <button
+                          type="submit"
+                          className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        >
+                          create
+                        </button>
+                        <button
+                          type="button"
+                          className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                          onClick={() => setEditModal(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        {/* end of Edit modal  */}
       </div>
     </>
   );

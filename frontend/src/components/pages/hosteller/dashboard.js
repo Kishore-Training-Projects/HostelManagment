@@ -3,24 +3,77 @@ import Userheader from "../../layout/header/userheader";
 import { useEffect } from "react";
 
 export const Dashboard = () => {
-
-  const [name,setname] = useState("");
+  const [noticecolor, setnoticecolor] = useState([
+    "gray",
+    "yellow",
+    "red",
+    "blue",
+    "green",
+  ]);
+  const [notice, setNotice] = useState([]);
+  const [name, setname] = useState("");
   useEffect(() => {
     const profile = () => {
-      var item_value = JSON.parse(sessionStorage.getItem('student_key'))
+      var item_value = JSON.parse(sessionStorage.getItem("student_key"));
       // console.log(item_value.picture)
-      setname(item_value.name)
-    }
+      setname(item_value.name);
+    };
 
-    profile()
-  }, [])
+    profile();
+    fetchData();
+  }, []);
+
+  // fet notice data
+
+  // fetch complaint
+  const fetchData = () => {
+    fetch("https://localhost:7047/api/NoticeBoard")
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((data) => {
+        setNotice(data);
+        console.log(data);
+      });
+  };
+
+  // end of fetch notice data
+
+  // render notice card
+
+  const renderTable = () => {
+    if (Array.isArray(notice)) {
+      return notice.map((n, i) => {
+        return (
+          <>
+            <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
+              <div class={`bg-${noticecolor[i]}-200 text-gray-700 text-lg font-bold p-4`}>
+                <h3>🔔 Notice {i+1}</h3>
+              </div>
+              <div class="px-6 py-4">
+                <p class="text-gray-700 text-base">
+                  {n.noticeDetails}
+                </p>
+              </div>
+              <p class="px-4 py-3 text-gray-400 text-right text-sm ">
+              {n.noticeDate}
+
+              </p>
+            </div>
+          </>
+        );
+      });
+    }
+  };
 
   return (
     <>
       <Userheader />
 
       <div className="container items-center lg:mx-20 lg:mt-10 mt-6 ">
-
         <h2 class="mb-4 text-2xl text-center font-extrabold text-gray-900 dark:text-white md:text-4xl lg:text-5xl">
           Welcome Back{" "}
           <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
@@ -29,75 +82,9 @@ export const Dashboard = () => {
           👋
         </h2>
 
-
         <div class="lg:pt-5 pt-3 flex flex-wrap justify-center">
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
-    <div class="bg-gray-200 text-gray-700 text-lg font-bold p-4">
-      <h3>🔔 Notice 1</h3>
-    </div>
-    <div class="px-6 py-4">
-      <p class="text-gray-700 text-base">
-      Lorem ipsum dolor sit amet,  Donec interdum dui a diam sagittis ultricies.
-        Lorem ipsum dolor sit amet,
-
-      </p>
-      
-    </div>
-    <p class="px-4 py-3 text-gray-400 text-right text-sm ">
-        27-09-2001
-      </p>
-    
-  </div>
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
-    <div class="bg-yellow-200 text-yellow-800 text-lg font-bold p-4">
-      <h3>🔔 Notice 2</h3>
-    </div>
-    <div class="px-6 py-4">
-      <p class="text-gray-700 text-base">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum dui a diam sagittis ultricies.
-      </p>
-      <p class="text-gray-400 text-right text-sm ">
-        27-09-2001
-      </p>
-    </div>
-  </div>
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
-    <div class="bg-red-200 text-red-800 text-lg font-bold p-4">
-      <h3>🔔 Notice 3</h3>
-    </div>
-    <div class="px-6 py-4">
-      <p class="text-gray-700 text-base">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum dui a diam sagittis ultricies.
-      </p>
-    </div>
-  </div>
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
-    <div class="bg-blue-200 text-blue-800 text-lg font-bold p-4">
-      <h3>Notice 4</h3>
-    </div>
-    <div class="px-6 py-4">
-      <p class="text-gray-700 text-base">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum dui a diam sagittis ultricies.
-      </p>
-    </div>
-  </div>
-
-  <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
-    <div class="bg-green-200 text-green-800 text-lg font-bold p-4">
-      <h3>Notice 5</h3>
-    </div>
-    <div class="px-6 py-4">
-      <p class="text-gray-700 text-base">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum dui a diam sagittis ultricies.
-      </p>
-    </div>
-  </div>
-  </div>
-  
+            {renderTable()}
+        </div>
 
         {/* <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
   <div class="bg-white border border-red-200 rounded-lg shadow-md p-4">

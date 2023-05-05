@@ -35,6 +35,45 @@ export const Profile = () => {
       });
   };
 
+
+
+
+  // update submit request
+
+
+  const submit_form = (event) => {
+    event.preventDefault();
+    fetch("https://localhost:7047/api/Hosteller/"+hosteller.hostellerId, {
+      method: "put",
+      body: JSON.stringify(hosteller),
+      headers: {
+        "Content-type": "application/JSON",
+      },
+    })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((res) => {
+        if (res.status == 400) {
+          throw new Error("Server responds with error!");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if(data["detail"]) {
+          alert("Error Cant update");
+        }
+        else {          
+          setHosteller(data);
+        } 
+         
+      });
+  };
+
+
+
+  // end of update submit request
+
   if (hosteller) {
     return (
       <>
@@ -136,7 +175,7 @@ export const Profile = () => {
 
             <div class="w-full md:w-2/3 px-1 lg:px-4">
               <div class="bg-white rounded-lg shadow-xl border-2 border-gray-200 p-3">
-                <form class="grid lg:grid-cols-3 grid-cols-2 lg:gap-3 gap-2">
+                <form class="grid lg:grid-cols-3 grid-cols-2 lg:gap-3 gap-2" onSubmit={submit_form}>
                   
                   <div class="col-span-3">
                     <h3 class="font-semibold text-lg mb-2 text-blue-500">
@@ -152,7 +191,12 @@ export const Profile = () => {
                       id="dob"
                       name="dob"
                       value={hosteller.dob}
-
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
                   </div>
@@ -167,6 +211,12 @@ export const Profile = () => {
                       type="text"
                       id="bloodgroup"
                       value={hosteller.bloodGroup}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       name="bloodGroup"
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
@@ -183,6 +233,12 @@ export const Profile = () => {
                       id="bloodgroup"
                       name="age"
                       value={hosteller.age}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
                   </div>
@@ -198,6 +254,12 @@ export const Profile = () => {
                       id="fathercontact"
                       name="mobile"
                       value={hosteller.mobile}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
                   </div>
@@ -213,6 +275,12 @@ export const Profile = () => {
                       id="fathername"
                       name="fatherName"
                       value={hosteller.fatherName}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
                   </div>
@@ -228,6 +296,12 @@ export const Profile = () => {
                       id="fathercontact"
                       name="fatherMobile"
                       value={hosteller.fatherMobile}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
                   </div>
@@ -242,6 +316,12 @@ export const Profile = () => {
                       id="institute"
                       value={hosteller.occupation}
                       name="occupation"
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       defaultChecked={hosteller.occupation}
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     >
@@ -261,6 +341,12 @@ export const Profile = () => {
                       type="text"
                       id="institute"
                       name="occupationName"
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       value={hosteller.occupationName}
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
@@ -276,6 +362,12 @@ export const Profile = () => {
                       type="text"
                       id="institute"
                       name="occupationLocation"
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       value={hosteller.occupationLocation}
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"
                     />
@@ -289,6 +381,12 @@ export const Profile = () => {
                     </label>
                     <textarea
                       value={hosteller.address}
+                      onChange={(e) =>
+                        setHosteller({
+                          ...hosteller,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
                       id="institute"
                       name="address"
                       class="w-full p-2 border-2 border-gray-300 rounded-md mb-4"

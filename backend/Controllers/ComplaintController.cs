@@ -29,7 +29,7 @@ namespace HostelManagement.Controllers
           {
               return NotFound();
           }
-            return await _context.ComplaintModel.ToListAsync();
+            return await _context.ComplaintModel.Include(x=>x.hosteller).ToListAsync();
         }
 
         // GET: api/Complaint/5
@@ -50,10 +50,35 @@ namespace HostelManagement.Controllers
             return complaintModel;
         }
 
+
+        // GET: api/Complaint/5
+        [HttpGet("individual/{id}")]
+        public async Task<ActionResult<IEnumerable<ComplaintModel>>> GetHostellerComplaint(int id)
+        {
+            if (_context.ComplaintModel == null)
+            {
+                return NotFound();
+            }
+
+            var complaintModel = await _context.ComplaintModel.Where(x => x.hosteller.HostellerId == id).ToListAsync();
+
+            if (complaintModel == null)
+            {
+                return NotFound();
+            }
+
+            return complaintModel;
+        }
+
+
+
+
+
+
         // PUT: api/Complaint/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComplaintModel(int id, ComplaintModel complaintModel)
+        public async Task<ActionResult<ComplaintModel>> PutComplaintModel(int id, ComplaintModel complaintModel)
         {
             if (id != complaintModel.ComplaintID)
             {
@@ -77,8 +102,9 @@ namespace HostelManagement.Controllers
                     throw;
                 }
             }
+            
 
-            return NoContent();
+            return await _context.ComplaintModel.FindAsync(id);
         }
 
         // POST: api/Complaint
@@ -86,13 +112,24 @@ namespace HostelManagement.Controllers
         [HttpPost]
         public async Task<ActionResult<ComplaintModel>> PostComplaintModel(ComplaintModel complaintModel)
         {
+            int id = complaintModel.hosteller.HostellerId;
+            Console.WriteLine(id);
           if (_context.ComplaintModel == null)
           {
               return Problem("Entity set 'HostelManagementContext.ComplaintModel'  is null.");
           }
-            _context.ComplaintModel.Add(complaintModel);
-            await _context.SaveChangesAsync();
 
+            var hosteller = await _context.HostellerModel.Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+            complaintModel.hosteller = hosteller;
+            try
+            {
+                _context.ComplaintModel.Add(complaintModel);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                return Problem(e.Message);
+            }
             return CreatedAtAction("GetComplaintModel", new { id = complaintModel.ComplaintID }, complaintModel);
         }
 

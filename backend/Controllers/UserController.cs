@@ -53,7 +53,7 @@ namespace HostelManagement.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserModel(int id, UserModel userModel)
+        public async Task<ActionResult<UserModel>> PutUserModel(int id, UserModel userModel)
         {
             if (id != userModel.UserID)
             {
@@ -78,7 +78,8 @@ namespace HostelManagement.Controllers
                 }
             }
 
-            return NoContent();
+
+            return await _context.UserModel.FindAsync(id);
         }
 
 

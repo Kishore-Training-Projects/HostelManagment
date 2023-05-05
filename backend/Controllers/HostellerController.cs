@@ -128,7 +128,7 @@ namespace HostelManagement.Controllers
         // PUT: api/Hosteller/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHostellerModel(int id, HostellerModel hostellerModel)
+        public async Task<ActionResult<HostellerModel>> PutHostellerModel(int id, HostellerModel hostellerModel)
         {
             
 
@@ -161,8 +161,9 @@ namespace HostelManagement.Controllers
                     throw;
                 }
             }
+            var hostel = await _context.HostellerModel.Where(x => x.HostellerId == hostellerModel.HostellerId).FirstOrDefaultAsync();
 
-            return NoContent();
+            return hostel;
         }
 
         // POST: api/Hosteller
