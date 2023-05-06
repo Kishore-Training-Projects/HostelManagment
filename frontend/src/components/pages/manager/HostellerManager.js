@@ -10,6 +10,7 @@ export const HostellerManager = () => {
   const navigate = useNavigate();
 
     const [hosteller,setHosteller] = useState();
+    const [backuphosteller, setbackupHosteller] = useState([]);
 
 
   // useeffect to get data
@@ -73,6 +74,7 @@ export const HostellerManager = () => {
         })
         .then((data) => {
           setHosteller(data);
+          setbackupHosteller(data);
           console.log(data);
         });
     };
@@ -144,6 +146,30 @@ export const HostellerManager = () => {
 
     // end of render table data
 
+
+    /// search function
+
+    const handleSearch = (event) => {
+      const value = event.target.value.toLowerCase();
+      searchfunction(value);
+    };
+  
+    const searchfunction = (search) => {
+      let filteredData = backuphosteller;
+  
+      if (search !== "") {
+        filteredData = filteredData.filter(
+          (item) => item.name.includes(search) || item.email.includes(search)
+        );
+        console.log(search);
+      }
+  
+      setHosteller(filteredData);
+      if (search == "") {
+        fetchData();
+      }
+    };
+
   return (
     <>
       <Managerheader />
@@ -158,7 +184,7 @@ export const HostellerManager = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="#"
+                href="/manager/dashboard"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -230,7 +256,9 @@ export const HostellerManager = () => {
                         </div>
                         <input
                           type="text"
-                          id="simple-search"
+                          onChange={(e) => {
+                            handleSearch(e);
+                          }}
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Search"
                           required=""

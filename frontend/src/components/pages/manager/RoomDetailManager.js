@@ -11,6 +11,7 @@ export const RoomDetailManager = () => {
 
   const [room, setRoom] = useState();
   const [hosteller, setHosteller] = useState([]);
+  const [backupHosteller, setbackupHosteller] = useState([]);
 
   const [queryParameters] = useSearchParams();
 
@@ -84,6 +85,7 @@ const removeuser = (id) => {
       })
       .then((data) => {
         setHosteller(data);
+        setbackupHosteller(data);
       });
   };
 
@@ -164,6 +166,32 @@ const removeuser = (id) => {
       );
     }
   };
+
+  // search function
+
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
+    searchfunction(value);
+  };
+
+  const searchfunction = (search) => {
+    let filteredData = backupHosteller;
+
+    if (search !== "") {
+      filteredData = filteredData.filter(
+        (item) => item.name.includes(search) || item.occupation.includes(search)
+      );
+      console.log(search);
+    }
+
+    setHosteller(filteredData);
+    if (search == "") {
+      fetchhostellerData(queryParameters.get("id"));
+    }
+  };
+
+
+
 
   return (
     <>
@@ -292,6 +320,9 @@ const removeuser = (id) => {
                         </div>
                         <input
                           type="text"
+                          onChange={(e) => {
+                            handleSearch(e);
+                          }}
                           id="simple-search"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Search"

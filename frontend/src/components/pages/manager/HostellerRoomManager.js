@@ -11,6 +11,7 @@ export const HostellerRoomManager = () => {
   const navigate = useNavigate();
 
     const [hosteller,setHosteller] = useState();
+    const [backuphosteller, setbackupHosteller] = useState([]);
 
     const [queryParameters] = useSearchParams()
 
@@ -25,7 +26,7 @@ export const HostellerRoomManager = () => {
  const delete_hosteller = (id) => {
 
   // eslint-disable-next-line no-restricted-globals
-  if (confirm("Do you want this Hosteller to room !!💀") == true) {
+  if (confirm("Do you want this Hosteller to add this room !!✅") == true) {
     
     fetch("https://localhost:7047/api/Hosteller/addroom?hosteller="+id+"&roomNo=" + queryParameters.get("id"), {
       method: "post",
@@ -68,7 +69,7 @@ export const HostellerRoomManager = () => {
 
 
     // fetch hosteller all data
-    const fetchData = (id) => {
+    const fetchData = () => {
       fetch("https://localhost:7047/api/Hosteller/new")
         .then((response) => {
           return response.json();
@@ -78,6 +79,7 @@ export const HostellerRoomManager = () => {
         })
         .then((data) => {
           setHosteller(data);
+          setbackupHosteller(data);
           console.log(data);
         });
     };
@@ -123,7 +125,7 @@ export const HostellerRoomManager = () => {
                          
                           <button
                            onClick={() => {delete_hosteller(user.hostellerId)}}
-                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-sm text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                            class="text-white justify-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                           >
                                 Add room
                           </button>
@@ -136,6 +138,29 @@ export const HostellerRoomManager = () => {
     };
 
     // end of render table data
+
+    // search function
+
+    const handleSearch = (event) => {
+      const value = event.target.value.toLowerCase();
+      searchfunction(value);
+    };
+  
+    const searchfunction = (search) => {
+      let filteredData = backuphosteller;
+  
+      if (search !== "") {
+        filteredData = filteredData.filter(
+          (item) => item.name.includes(search) || item.email.includes(search)
+        );
+        console.log(search);
+      }
+  
+      setHosteller(filteredData);
+      if (search == "") {
+        fetchData();
+      }
+    };
 
   return (
     <>
@@ -181,7 +206,7 @@ export const HostellerRoomManager = () => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <a  class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                <a href="/manager/room" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">
                   Room 
                 </a>
               </div>
@@ -264,7 +289,9 @@ export const HostellerRoomManager = () => {
                         </div>
                         <input
                           type="text"
-                          id="simple-search"
+                          onChange={(e) => {
+                            handleSearch(e);
+                          }}
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Search"
                           required=""
