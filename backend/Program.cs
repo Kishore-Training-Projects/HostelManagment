@@ -8,9 +8,25 @@ namespace HostelManagement
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<HostelManagementContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("HostelManagementContext") ?? throw new InvalidOperationException("Connection string 'HostelManagementContext' not found.")));
 
+            //database cobtext dependecy injection
+            /*    var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+                var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+                var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");*/
+
+            //database cobtext dependecy injection
+            var dbHost = "localhost";
+            var dbName = "Hostels";
+            var dbPassword = "1234";
+
+            var connectionString =$"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
+
+            builder.Services.AddDbContext<HostelManagementContext>(opt => opt.UseSqlServer(connectionString));
+
+
+       /*     builder.Services.AddDbContext<HostelManagementContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("HostelManagementContext") ?? throw new InvalidOperationException("Connection string 'HostelManagementContext' not found.")));
+*/
             // Add services to the container.
 
             builder.Services.AddControllers();

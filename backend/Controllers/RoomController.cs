@@ -51,6 +51,7 @@ namespace HostelManagement.Controllers
         }
 
 
+        // api to get room details of hosteller based on hosteller id
 
         // GET: api/Room/5
         [HttpGet("hosteller/{id}")]
@@ -73,6 +74,7 @@ namespace HostelManagement.Controllers
         }
 
 
+        // update room details 
 
 
         // PUT: api/Room/5
@@ -115,9 +117,19 @@ namespace HostelManagement.Controllers
           {
               return Problem("Entity set 'HostelManagementContext.RoomModel'  is null.");
           }
+
+          try
+            {
+
             _context.RoomModel.Add(roomModel);
             await _context.SaveChangesAsync();
 
+            }
+            catch(Exception e)
+            {
+                return Problem("Entity set 'HostelManagementContext.RoomModel'  is null.");
+
+            }
             return CreatedAtAction("GetRoomModel", new { id = roomModel.RoomNo }, roomModel);
         }
 

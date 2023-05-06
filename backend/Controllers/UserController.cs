@@ -34,7 +34,7 @@ namespace HostelManagement.Controllers
         }
 
 
-
+        // api to get count od details
 
         // GET: api/User
         [HttpGet("count/")]
@@ -103,6 +103,7 @@ namespace HostelManagement.Controllers
         }
 
 
+        // api to get admin login 
 
         // POST: api/login
         [HttpPost("login")]

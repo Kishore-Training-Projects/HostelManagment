@@ -24,7 +24,6 @@ namespace HostelManagement.Controllers
 
         // api to get all hosteller including room
 
-
         // GET: api/Hosteller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellerModel()
@@ -37,6 +36,7 @@ namespace HostelManagement.Controllers
         }
 
 
+        // api get all roomate hosteller for user dashboard
         // GET: api/Hosteller/roommates
         [HttpGet("roommates/{id}")]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> getHostellerroommates(int id)
@@ -64,7 +64,7 @@ namespace HostelManagement.Controllers
 
 
 
-
+        //api to get all hosteller not assigned with room
         // GET: api/Hosteller
         [HttpGet("new/")]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellernew()
@@ -76,6 +76,9 @@ namespace HostelManagement.Controllers
             return await _context.HostellerModel.Where(x=>x.Room == null).ToListAsync();
         }
 
+
+
+        //api to get  hosteller individual by id
 
         [HttpGet("{id}")]
         public async Task<ActionResult<HostellerModel>> GetHostellerModel(int id)
@@ -95,6 +98,7 @@ namespace HostelManagement.Controllers
         }
 
 
+        //api to get hosteller based on  roomNo
 
         [HttpGet("room/{id}")]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellerofroom(int id)
@@ -113,6 +117,8 @@ namespace HostelManagement.Controllers
             return hostellerModel;
         }
 
+
+        //api to get email address for sign in with google
 
         // POST: api/Hosteller/user/login
         [HttpGet("user/login")]
@@ -146,6 +152,7 @@ namespace HostelManagement.Controllers
         }
 
 
+           // api to addroom for hosteller for manager
 
         // POST: api/Hosteller
         [HttpPost("addroom/")]
@@ -157,19 +164,26 @@ namespace HostelManagement.Controllers
             {
                 return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
             }
-            HostellerModel hos = await _context.HostellerModel.FindAsync(hosteller);
-            RoomModel room = await _context.RoomModel.FindAsync(roomNo);
-            room.Occupied = room.Occupied + 1;
+            HostellerModel hos = await _context.HostellerModel.FindAsync(hosteller); // get hosteller details
+            RoomModel room = await _context.RoomModel.FindAsync(roomNo); // get room model
+            room.Occupied = room.Occupied + 1;  // updating room occupied
             hos.Room = room;
-            _context.Entry(hos).State = EntityState.Modified;
 
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                _context.Entry(hos).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return Problem("Unable to add room to hosteller");
+            }
             return CreatedAtAction("GetHostellerModel", new { id = hosteller }, hos);
         }
 
 
 
+        // api to remove roommates
 
         // PUT: api/Hosteller/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -178,17 +192,19 @@ namespace HostelManagement.Controllers
         {
 
 
-
+            // get details of model and and update room details 
 
             var hostellerModel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
             var Rooms = hostellerModel.Room;
             Rooms.Occupied = Rooms.Occupied - 1;
             hostellerModel.Room = null;
-            
+          
+
             _context.Entry(hostellerModel).State = EntityState.Modified;
             _context.Entry(Rooms).State = EntityState.Modified;
-
-            try
+        
+            
+           try
             {
                 await _context.SaveChangesAsync();
             }
@@ -209,20 +225,13 @@ namespace HostelManagement.Controllers
         }
 
 
-
+        // api to update hosteller details
         // PUT: api/Hosteller/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<ActionResult<HostellerModel>> PutHostellerModel(int id, HostellerModel hostellerModel)
         {
             
-
-            /*if (hostellerModel.Room.RoomNo != null)
-            {
-                Console.WriteLine("in if");
-                var room = await _context.RoomModel.Where(x => x.RoomNo == hostellerModel.Room.RoomNo).FirstOrDefaultAsync();
-                hostellerModel.Room = room;
-            }*/
 
             if (id != hostellerModel.HostellerId)
             {
@@ -260,11 +269,18 @@ namespace HostelManagement.Controllers
           {
               return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
           }
+          try
+            {
             _context.HostellerModel.Add(hostellerModel);
             await _context.SaveChangesAsync();
-
+             }
+            catch(Exception e)
+            {
+                return Problem("eroor in creating hosteller");
+            }
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);
         }
+
 
         // DELETE: api/Hosteller/5
         [HttpDelete("{id}")]
