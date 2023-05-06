@@ -33,6 +33,26 @@ namespace HostelManagement.Controllers
         }
 
 
+        // GET: api/Hosteller/roommates
+        [HttpGet("roommates/{id}")]
+        public async Task<ActionResult<IEnumerable<HostellerModel>>> getHostellerroommates(int id)
+        {
+
+            if (_context.HostellerModel == null)
+            {
+                return NotFound();
+            }
+
+            var hostel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+
+
+            return await _context.HostellerModel.Where(x=>x.Room.RoomNo == hostel.Room.RoomNo).Include(x => x.Room).ToListAsync();
+        }
+
+
+
+
+
         // GET: api/Hosteller
         [HttpGet("new/")]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellernew()
@@ -134,6 +154,46 @@ namespace HostelManagement.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetHostellerModel", new { id = hosteller }, hos);
+        }
+
+
+
+
+        // PUT: api/Hosteller/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("roommates/remove/{id}")]
+        public async Task<ActionResult<HostellerModel>> removeroomates(int id)
+        {
+
+
+
+
+            var hostellerModel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+            var Rooms = hostellerModel.Room;
+            Rooms.Occupied = Rooms.Occupied - 1;
+            hostellerModel.Room = null;
+            
+            _context.Entry(hostellerModel).State = EntityState.Modified;
+            _context.Entry(Rooms).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!HostellerModelExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            var hostel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+
+            return hostel;
         }
 
 

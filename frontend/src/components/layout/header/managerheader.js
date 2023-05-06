@@ -12,7 +12,6 @@ const navigation = [
   { name: 'Complaint', href: '/manager/complaint', current: false },
   { name: 'Rooms', href: '/manager/room', current: false },
   { name: 'Hostellers', href: '/manager/hosteller', current: false },
-  { name: 'Users', href: '/admin/users', current: false },
 ]
 
 function classNames(...classes) {

@@ -50,6 +50,31 @@ namespace HostelManagement.Controllers
             return roomModel;
         }
 
+
+
+        // GET: api/Room/5
+        [HttpGet("hosteller/{id}")]
+        public async Task<ActionResult<RoomModel>> getroomofuser(int id)
+        {
+            if (_context.RoomModel == null)
+            {
+                return NotFound();
+            }
+            var hostel = await _context.HostellerModel.Include(x=>x.Room).Where(x=> x.HostellerId == id).FirstOrDefaultAsync();
+            var roomModel = hostel.Room;
+
+
+            if (roomModel == null)
+            {
+                return NotFound();
+            }
+
+            return roomModel;
+        }
+
+
+
+
         // PUT: api/Room/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

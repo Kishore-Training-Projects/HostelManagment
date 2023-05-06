@@ -7,6 +7,8 @@ import { Dashboard } from "../pages/hosteller/dashboard";
 import { Profile } from "../pages/hosteller/profile";
 import { Room } from "../pages/hosteller/room";
 import { Complaint } from "../pages/hosteller/complaint";
+import { HostellerDetails } from "../pages/hosteller/hostellerdetails";
+
 
 // Admin pages
 
@@ -67,6 +69,10 @@ const routerList = [
   {
     path: "/user/profile",
     element: <Profile />,
+  },
+  {
+    path: "/user/hosteller/details",
+    element: <HostellerDetails />,
   },
   {
     path: "/admin/dashboard",

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HostelManagement.Data;
 using HostelManagement.Model;
+using Newtonsoft.Json;
 
 namespace HostelManagement.Controllers
 {
@@ -30,6 +31,25 @@ namespace HostelManagement.Controllers
               return NotFound();
           }
             return await _context.UserModel.ToListAsync();
+        }
+
+
+
+
+        // GET: api/User
+        [HttpGet("count/")]
+        public async Task<ActionResult<string>> getcount()
+        {
+            Dictionary<string, int> count = new Dictionary<string, int>();
+
+            count["hosteller"] = _context.HostellerModel.Count();
+            count["room"] = _context.RoomModel.Count();
+            count["complaint"] = _context.ComplaintModel.Where(x=>x.status=="initiated").Count();
+            count["user"] = _context.UserModel.Count();
+
+
+            return JsonConvert.SerializeObject(count);
+            
         }
 
         // GET: api/User/5

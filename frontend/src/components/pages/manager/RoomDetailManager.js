@@ -33,6 +33,45 @@ export const RoomDetailManager = () => {
     fetchhostellerData(queryParameters.get("id"));
   }, []);
 
+// remove user from room
+
+const removeuser = (id) => {
+
+  // eslint-disable-next-line no-restricted-globals
+  if (confirm("Do you want to remove user from record !!💀") == true) {
+    
+    fetch("https://localhost:7047/api/Hosteller/roommates/remove/" + id, {
+      method: "put",
+      headers: {
+        "Content-type": "application/JSON",
+      },
+    })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((res) => {
+        if (res.status == 400) {
+          throw new Error("Server responds with error!");
+        }
+       
+       
+        return res.json();
+      })
+
+      .then((data) => {
+        if (data["detail"]) {
+          alert("Error Cant delete");
+        }else
+        {
+          fetchhostellerData(queryParameters.get("id"));
+        }
+      });
+  };
+  }
+
+
+
+
   // get userdetails of that room
 
   const fetchhostellerData = (id) => {
@@ -81,7 +120,7 @@ export const RoomDetailManager = () => {
 
               <td class="px-4 py-3 flex items-center justify-center">
                 <button
-                  type="button"
+                  onClick={()=>{removeuser(com.hostellerId)}}
                   class="text-white uppercase bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                  

@@ -48,7 +48,7 @@ export const Dashboard = () => {
       return notice.map((n, i) => {
         return (
           <>
-            <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
+            <div class={`max-w-sm rounded hover:shadow-2xl  overflow-hidden shadow-lg m-4`}>
               <div class={`bg-${noticecolor[i]}-200 text-gray-700 text-lg font-bold p-4`}>
                 <h3>🔔 Notice {i+1}</h3>
               </div>
