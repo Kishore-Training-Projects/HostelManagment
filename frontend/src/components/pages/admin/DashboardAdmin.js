@@ -3,6 +3,7 @@ import Adminheader from "../../layout/header/adminheader";
 import { useEffect } from "react";
 
 export const AdminDashboard = () => {
+  const [count, setcount] = useState({});
 
      const [noticecolor, setnoticecolor] = useState([
     "gray",
@@ -16,6 +17,7 @@ export const AdminDashboard = () => {
   useEffect(() => {
     
     fetchData();
+    fetchcountData();
   }, []);
 
 
@@ -37,6 +39,28 @@ export const AdminDashboard = () => {
 
   // end of fetch notice data
 
+
+
+
+  
+  // fetch count data
+
+  const fetchcountData = () => {
+    fetch("https://localhost:7047/api/user/count")
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => {
+        alert("Unable to connect Backend");
+      })
+      .then((data) => {
+        setcount(data);
+        console.log(data);
+      });
+  };
+
+
+  
    // render notice card
 
   const renderTable = () => {
@@ -44,7 +68,7 @@ export const AdminDashboard = () => {
       return notice.map((n, i) => {
         return (
           <>
-            <div class="max-w-sm rounded overflow-hidden shadow-lg m-4">
+            <div class="max-w-sm rounded hover:shadow-2xl overflow-hidden shadow-lg m-4">
               <div class={`bg-${noticecolor[i]}-200 text-gray-700 text-lg font-bold p-4`}>
                 <h3>🔔 Notice {i+1}</h3>
               </div>
@@ -82,7 +106,7 @@ export const AdminDashboard = () => {
             </svg></div>
         <div class="px-4 text-gray-700 text-cente">
             <h3 class="text-md font-bold tracking-wider">Total hosteller</h3>
-            <p class="text-3xl ">234</p>
+            <p class="text-3xl ">{count ? count.hosteller : 0}</p>
         </div>
     </div>
     <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow shadow hover:shadow-2xl border-2 border-blue-400">
@@ -94,7 +118,7 @@ export const AdminDashboard = () => {
             </svg></div>
         <div class="px-4 text-gray-700 ">
         <h3 class="text-md font-bold tracking-wider">Total Rooms</h3>
-            <p class="text-3xl ">234</p>
+            <p class="text-3xl ">{count ? count.room : 0}</p>
         </div>
     </div>
     <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow hover:shadow-2xl border-2 border-indigo-400">
@@ -106,19 +130,17 @@ export const AdminDashboard = () => {
             </svg></div>
         <div class="px-4 text-gray-700">
         <h3 class="text-md font-bold tracking-wider">Pending Complaint</h3>
-            <p class="text-3xl ">234</p>
+            <p class="text-3xl ">{count ? count.complaint : 0}</p>
         </div>
     </div>
     <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow hover:shadow-2xl border-2 border-red-400">
-        <div class="p-4 bg-red-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4">
-                </path>
-            </svg></div>
+        <div class="p-4 bg-red-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-white w-12 h-12">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+</svg>
+</div>
         <div class="px-4 text-gray-700">
-        <h3 class="text-md font-bold tracking-wider">Total Manager</h3>
-            <p class="text-3xl ">3</p>
+        <h3 class="text-md font-bold tracking-wider">Total Users</h3>
+            <p class="text-3xl ">{count ? count.user : 0}</p>
         </div>
     </div>
 </div>

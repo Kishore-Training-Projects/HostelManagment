@@ -9,6 +9,8 @@ export const RoomAdmin = () => {
   const [EditData, setEditdata] = useState();
 
   const [room, setRoom] = useState([]);
+  const [backuproom, setbackuproom] = useState([]);
+
   const [formData, setFormData] = useState({
     roomNo: 0,
     roomType: "",
@@ -116,6 +118,7 @@ export const RoomAdmin = () => {
       })
       .then((data) => {
         setRoom(data);
+        setbackuproom(data);
         console.log(data);
       });
   };
@@ -240,6 +243,33 @@ export const RoomAdmin = () => {
 
   // end of render table
 
+
+  // search function
+
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
+    searchfunction(value);
+  };
+
+  const searchfunction = (search) => {
+    let filteredData = backuproom;
+
+    if (search !== "") {
+      filteredData = filteredData.filter(
+        (item) => item.roomType.includes(search) ||   item.roomDescription.includes(search) 
+      );
+      console.log(search);
+    }
+
+    setRoom(filteredData);
+    if (search == "") {
+      fetchData();
+    }
+  };
+
+
+
+
   return (
     <>
       <Adminheader />
@@ -253,7 +283,7 @@ export const RoomAdmin = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="#"
+                href="/admin/dashboard"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -325,7 +355,7 @@ export const RoomAdmin = () => {
                         </div>
                         <input
                           type="text"
-                          id="simple-search"
+                          onChange={(e)=>{handleSearch(e)}}
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           placeholder="Search"
                           required=""

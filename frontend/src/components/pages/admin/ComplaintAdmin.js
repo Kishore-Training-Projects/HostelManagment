@@ -8,7 +8,12 @@ export const ComplaintAdmin = () => {
   const [EditModal, setEditModal] = useState(false);
   const [complaint, setComplaint] = useState([]);
   const [individual, setIndividual] = useState({});
+  const [backup, setbackupComplaint] = useState([]);
+
   var datas = JSON.parse(sessionStorage.getItem("student_key"));
+
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
 
   // useeffect to get data
@@ -30,6 +35,7 @@ export const ComplaintAdmin = () => {
       })
       .then((data) => {
         setComplaint(data);
+        setbackupComplaint(data);
         console.log(data);
       });
   };
@@ -125,6 +131,36 @@ export const ComplaintAdmin = () => {
     }
 
   // end of delete complaint
+
+   // search function
+ const searchfunction = () => {
+
+  let filteredData = backup;
+
+
+  if(search !== "")
+  {
+   filteredData = filteredData.filter(item =>
+    item.complaintType.includes(search)
+    );
+    console.log("Search");
+  }
+  if( category !=="")
+  {
+  filteredData = filteredData.filter(item =>
+   
+    item.status.includes(category)
+    
+    );
+    console.log("drop");
+  }  
+  setComplaint(filteredData);
+if( category =="" && search == "")
+{
+  fetchData();
+}
+
+}
 
   // render card
 
@@ -224,7 +260,7 @@ export const ComplaintAdmin = () => {
           <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
               <a
-                href="#"
+                href="/admin/dashboard"
                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
@@ -255,7 +291,7 @@ export const ComplaintAdmin = () => {
                   ></path>
                 </svg>
                 <a
-                  href="#"
+                  href="/admin/complaint"
                   class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
                 >
                   Complaint
@@ -270,15 +306,29 @@ export const ComplaintAdmin = () => {
         {/* search bar */}
 
         <div class="w-full pt-2 lg:pt-10 ">
-          <select class="lg:hidden block w-full mb-3 mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option selected="">Select the option</option>
-            <option>hi</option>
+         <select
+            name="dropdown"
+            onChange={(e) => setCategory(e.target.value)}
+            className="lg:hidden block w-full mb-3 mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected="" value="">
+              Select the option
+            </option>
+            <option value="initiated">initiated</option>
+            <option value="closed">closed</option>
           </select>
 
           <div class="flex items-center">
-            <select class="hidden lg:block mr-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option selected="">Select the option</option>
-              <option>hi</option>
+          <select
+              name="dropdown"
+              onChange={(e) => setCategory(e.target.value)}
+              className="hidden lg:block mr-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option selected="" value="">
+                Select the option
+              </option>
+              <option value="initiated">initiated</option>
+              <option value="closed">closed</option>
             </select>
 
             <div class="relative w-full">
@@ -299,15 +349,15 @@ export const ComplaintAdmin = () => {
               </div>
               <input
                 type="text"
-                id="voice-search"
+                onChange={(e) => setSearch(e.target.value)}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search Mockups, Logos, Design Templates..."
                 required
               />
             </div>
             <button
-              type="submit"
-              class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               onClick={()=>{searchfunction()}}
+               class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               <svg
                 aria-hidden="true"

@@ -12,6 +12,7 @@ namespace HostelManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class HostellerController : ControllerBase
     {
         private readonly HostelManagementContext _context;
@@ -20,6 +21,9 @@ namespace HostelManagement.Controllers
         {
             _context = context;
         }
+
+        // api to get all hosteller including room
+
 
         // GET: api/Hosteller
         [HttpGet]
@@ -43,10 +47,18 @@ namespace HostelManagement.Controllers
                 return NotFound();
             }
 
-            var hostel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+            try
+            {
 
-
+                var hostel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
             return await _context.HostellerModel.Where(x=>x.Room.RoomNo == hostel.Room.RoomNo).Include(x => x.Room).ToListAsync();
+            }
+            catch(Exception e)
+            {
+                return NotFound();
+            }
+
+
         }
 
 
