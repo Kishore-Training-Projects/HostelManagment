@@ -55,8 +55,7 @@ const removeuser = (id) => {
           throw new Error("Server responds with error!");
         }
        
-       
-        return res.json();
+       return;
       })
 
       .then((data) => {

@@ -43,11 +43,10 @@ export const UserAdmin = () => {
           if (res.status == 200) {
             fetchData();
           }
-          return res.json();
         })
   
         .then((data) => {
-          if (data["detail"]) {
+          if (data) {
             alert("Error Cant Delete");
           }
         });
@@ -638,7 +637,7 @@ export const UserAdmin = () => {
                           type="submit"
                           className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                         >
-                          create
+                          update
                         </button>
                         <button
                           type="button"

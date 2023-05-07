@@ -97,11 +97,10 @@ export const RoomManager = () => {
           if (res.status == 200) {
             fetchData();
           }
-          return res.json();
         })
 
         .then((data) => {
-          if (data["detail"]) {
+          if (data) {
             alert("Error Cant Delete");
           }
         });

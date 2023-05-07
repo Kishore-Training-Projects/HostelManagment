@@ -42,6 +42,9 @@ export const AddHostellerAdmin = () => {
         if (res.status == 400) {
           throw new Error("Server responds with error!");
         }
+        if (res.status == 201) {
+          navigate("/login");
+        }
         return res.json();
       })
       .then((data) => {

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { Headers } from "../layout/header/header";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -151,6 +152,7 @@ export const Login = () => {
 
   return (
     <>
+    <Headers />
       <div
         className="bg-cover bg-white"
         

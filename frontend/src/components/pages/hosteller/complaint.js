@@ -184,11 +184,11 @@ export const Complaint = () => {
           if (res.status == 200) {
             fetchData(profile.userid);
           }
-          return res.json();
+          return;
         })
 
         .then((data) => {
-          if (data["detail"]) {
+          if (data) {
             alert("Error Cant Insert");
           }
         });

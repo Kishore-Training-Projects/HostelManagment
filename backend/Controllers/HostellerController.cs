@@ -175,11 +175,7 @@ namespace HostelManagement.Controllers
 
             try
             {
-                string emailsubject = "Room Confirmation 🙏";
-                String message = "Dear " + hos.Name + "\n\t"
-                    + "Thank you for registering in our system . Your romm is confirm. \n"
-                    +"Your room No : "+room.RoomNo;
-                email.SendEmail(emailsubject, hos.Email, hos.Name, message).Wait();
+               
 
 
                 _context.Entry(hos).State = EntityState.Modified;
@@ -189,6 +185,12 @@ namespace HostelManagement.Controllers
             {
                 return Problem("Unable to add room to hosteller");
             }
+            /*string emailsubject = "Room Confirmation 🙏";
+            String message = "Dear " + hos.Name + "\n\t"
+                + "Thank you for registering in our system . Your romm is confirm. \n"
+                + "Your room No : " + room.RoomNo;
+            email.SendEmail(emailsubject, hos.Email, hos.Name, message).Wait();*/
+
             return CreatedAtAction("GetHostellerModel", new { id = hosteller }, hos);
         }
 
@@ -211,18 +213,13 @@ namespace HostelManagement.Controllers
             hostellerModel.Room = null;
           
 
-            _context.Entry(hostellerModel).State = EntityState.Modified;
-            _context.Entry(Rooms).State = EntityState.Modified;
-        
             
            try
             {
-                string emailsubject = "RommDetails Removed ❌";
-                String message = "Dear " + hostellerModel.Name + "\n\t"
-                    + "Thank you for registering in our system . Your romm is closed. \n"
-                + "Your are removed from the room🎉";
-                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
 
+            _context.Entry(hostellerModel).State = EntityState.Modified;
+            _context.Entry(Rooms).State = EntityState.Modified;
+        
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -236,6 +233,13 @@ namespace HostelManagement.Controllers
                     throw;
                 }
             }
+                /*string emailsubject = "RommDetails Removed ❌";
+                String message = "Dear " + hostellerModel.Name + "\n\t"
+                    + "Thank you for registering in our system . Your romm is closed. \n"
+                + "Your are removed from the room🎉";
+                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
+
+
             var hostel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
 
             return hostel;
@@ -292,13 +296,13 @@ namespace HostelManagement.Controllers
 
 
             
-           
+           /*
 
                 string emailsubject = "Registeration Confirmation 🙏";
                 String message = "Dear " + hostellerModel.Name + "\n\t"
                     + "Thank you for registering in our system . Please always support us.";
 
-               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
+               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
 
 
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);
@@ -318,6 +322,7 @@ namespace HostelManagement.Controllers
             {
                 return NotFound();
             }
+             hostellerModel.Room = null;
 
             _context.HostellerModel.Remove(hostellerModel);
             await _context.SaveChangesAsync();

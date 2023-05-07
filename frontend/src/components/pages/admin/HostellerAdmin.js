@@ -46,15 +46,22 @@ export const HostellerAdmin = () => {
         }
         if (res.status == 204) {
           fetchData();
+
         }
         if (res.status == 200) {
           fetchData();
+
+
         }
-        return res.json();
+        if (res.status == 500) {
+          alert("user is assigned with room so cant deleted")  ;
+
+      }
+      return;
       })
 
       .then((data) => {
-        if (data["detail"]) {
+        if (data) {
           alert("Error Cant delete");
         }
       });
@@ -78,7 +85,7 @@ export const HostellerAdmin = () => {
         })
         .then((data) => {
           setHosteller(data);
-          backuphosteller(data);
+          setbackupHosteller(data);
           console.log(data);
         });
     };

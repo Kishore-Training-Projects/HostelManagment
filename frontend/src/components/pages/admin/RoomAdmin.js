@@ -56,10 +56,9 @@ export const RoomAdmin = () => {
         if (res.status == 400) {
           throw new Error("Server responds with error!");
         }
-        return res.json();
       })
       .then((data) => {
-        if (data["detail"]) {
+        if (data) {
           alert("Error Cant update");
         } else {
           setEditModal(false);
@@ -94,11 +93,11 @@ export const RoomAdmin = () => {
           if (res.status == 200) {
             fetchData();
           }
-          return res.json();
+          return;
         })
 
         .then((data) => {
-          if (data["detail"]) {
+          if (data) {
             alert("Error Cant Delete");
           }
         });

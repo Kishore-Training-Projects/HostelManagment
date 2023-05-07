@@ -63,7 +63,8 @@ export const ViewHostellerAdmin = () => {
         if(data["detail"]) {
           alert("Error Cant update");
         }
-        else {          
+        else {   
+          alert("Update done successfully !!");       
           setHosteller(data);
         } 
          

@@ -110,11 +110,11 @@ export const ComplaintManager = () => {
           if (res.status == 200) {
             fetchData();
           }
-          return res.json();
+          return;
         })
 
         .then((data) => {
-          if (data["detail"]) {
+          if (data) {
             alert("Error Cant Insert");
           }
         });
