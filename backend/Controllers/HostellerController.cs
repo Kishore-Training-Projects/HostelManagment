@@ -9,7 +9,6 @@ using HostelManagement.Data;
 using HostelManagement.Model;
 using HostelManagement.Services;
 using Microsoft.Extensions.Hosting;
-using Hangfire;
 
 namespace HostelManagement.Controllers
 {
@@ -303,7 +302,7 @@ namespace HostelManagement.Controllers
                 String message = "Dear " + hostellerModel.Name + "\n\t"
                     + "Thank you for registering in our system . Please always support us.";
 
-               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message);
+               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
 
 
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);

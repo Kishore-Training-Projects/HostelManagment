@@ -14,7 +14,7 @@ export const Room = () => {
 
 
   const fetchData = (id) => {
-    fetch("https://localhost:7047/api/room/hosteller/" + id)
+    fetch("/api/room/hosteller/" + id)
       .then((response) => {
         return response.json();
       })
@@ -39,7 +39,7 @@ export const Room = () => {
   // get userdetails of that room
 
   const fetchhostellerData = (id) => {
-    fetch("https://localhost:7047/api/Hosteller/roommates/" + id)
+    fetch("/api/Hosteller/roommates/" + id)
       .then((response) => {
         return response.json();
       })

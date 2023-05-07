@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HostelManagement.Data;
 using HostelManagement.Model;
-using Hangfire;
 using HostelManagement.Services;
 
 namespace HostelManagement.Controllers

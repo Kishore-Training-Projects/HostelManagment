@@ -22,7 +22,7 @@ export const RoomAdmin = () => {
 
   // fetch edit user data
   const fetch_edit_data = (id) => {
-    fetch("https://localhost:7047/api/Room/" + id)
+    fetch("/api/Room/" + id)
       .then((response) => {
         return response.json();
       })
@@ -42,7 +42,7 @@ export const RoomAdmin = () => {
 
   const submit_edit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/Room/" + EditData.roomNo, {
+    fetch("/api/Room/" + EditData.roomNo, {
       method: "put",
       body: JSON.stringify(EditData),
       headers: {
@@ -75,7 +75,7 @@ export const RoomAdmin = () => {
   const delete_user = (id) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Do you want to delete this record !!💀") == true) {
-      fetch("https://localhost:7047/api/Room/" + id, {
+      fetch("/api/Room/" + id, {
         method: "delete",
         headers: {
           "Content-type": "application/JSON",
@@ -109,7 +109,7 @@ export const RoomAdmin = () => {
 
   // fetch room details
   const fetchData = () => {
-    fetch("https://localhost:7047/api/Room")
+    fetch("/api/Room")
       .then((response) => {
         return response.json();
       })
@@ -134,7 +134,7 @@ export const RoomAdmin = () => {
 
   const submit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/Room", {
+    fetch("/api/Room", {
       method: "post",
       body: JSON.stringify(formData),
       headers: {

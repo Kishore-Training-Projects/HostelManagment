@@ -24,7 +24,7 @@ export const UserAdmin = () => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Do you want to delete this record !!💀") == true) {
       
-      fetch("https://localhost:7047/api/User/" + id, {
+      fetch("/api/User/" + id, {
         method: "delete",
         headers: {
           "Content-type": "application/JSON",
@@ -60,7 +60,7 @@ export const UserAdmin = () => {
 
   // fetch edit user data
     const fetchuserdata = (id) => {
-      fetch("https://localhost:7047/api/User/" + id)
+      fetch("/api/User/" + id)
         .then((response) => {
           return response.json();
         })
@@ -81,7 +81,7 @@ export const UserAdmin = () => {
 
   const submit_edit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/User/" + Editdata.userID, {
+    fetch("/api/User/" + Editdata.userID, {
       method: "put",
       body: JSON.stringify(Editdata),
       headers: {
@@ -113,7 +113,7 @@ export const UserAdmin = () => {
 
   // fetch all user data
   const fetchData = () => {
-    fetch("https://localhost:7047/api/User")
+    fetch("/api/User")
       .then((response) => {
         return response.json();
       })
@@ -139,7 +139,7 @@ export const UserAdmin = () => {
 
   const submit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/User", {
+    fetch("/api/User", {
       method: "post",
       body: JSON.stringify(formData),
       headers: {

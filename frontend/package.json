@@ -1,5 +1,6 @@
 {
   "name": "hostel",
+  "proxy": "http://localhost:8004/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

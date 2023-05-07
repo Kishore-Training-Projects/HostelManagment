@@ -14,7 +14,7 @@ export const HostellerDetails = () => {
 
   useEffect(() => {
     const fetchData = (id) => {
-        fetch("https://localhost:7047/api/Hosteller/" + id)
+        fetch("/api/Hosteller/" + id)
           .then((response) => {
             return response.json();
           })
@@ -43,7 +43,7 @@ export const HostellerDetails = () => {
 
   const submit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/Hosteller/"+hosteller.hostellerId, {
+    fetch("/api/Hosteller/"+hosteller.hostellerId, {
       method: "put",
       body: JSON.stringify(hosteller),
       headers: {

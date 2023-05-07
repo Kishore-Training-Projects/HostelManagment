@@ -27,7 +27,7 @@ export const Register = () => {
 
   const submit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/Hosteller", {
+    fetch("/api/Hosteller", {
       method: "post",
       body: JSON.stringify(formData),
       headers: {

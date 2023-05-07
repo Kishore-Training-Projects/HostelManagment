@@ -26,7 +26,7 @@ export const Login = () => {
 
   const UserLogin = (event) => {
     fetch(
-      "https://localhost:7047/api/Hosteller/user/login?email=" + event.email,
+      "/api/Hosteller/user/login?email=" + event.email,
       {
         method: "get",
 
@@ -62,7 +62,7 @@ export const Login = () => {
   const AdminLogin = (event) => {
     event.preventDefault();
 
-    fetch("https://localhost:7047/api/User/login", {
+    fetch("/api/User/login", {
       method: "post",
       body: JSON.stringify({
         UserName: "",

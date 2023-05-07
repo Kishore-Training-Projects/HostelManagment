@@ -15,7 +15,7 @@ export const DashboardManager = () => {
 
   const submit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/noticeboard", {
+    fetch("/api/noticeboard", {
       method: "post",
       body: JSON.stringify(formData),
       headers: {
@@ -63,7 +63,7 @@ export const DashboardManager = () => {
   // fet notice data
 
   const fetchData = () => {
-    fetch("https://localhost:7047/api/NoticeBoard")
+    fetch("/api/NoticeBoard")
       .then((response) => {
         return response.json();
       })
@@ -79,7 +79,7 @@ export const DashboardManager = () => {
   // fetch count data
 
   const fetchcountData = () => {
-    fetch("https://localhost:7047/api/user/count")
+    fetch("/api/user/count")
       .then((response) => {
         return response.json();
       })
@@ -102,7 +102,7 @@ export const DashboardManager = () => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Do you want to delete this noticeboard !!💀") == true) {
       
-      fetch("https://localhost:7047/api/noticeboard/" + id, {
+      fetch("/api/noticeboard/" + id, {
         method: "delete",
         headers: {
           "Content-type": "application/JSON",

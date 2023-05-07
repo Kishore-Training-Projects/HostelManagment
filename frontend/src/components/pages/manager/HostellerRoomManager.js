@@ -28,7 +28,7 @@ export const HostellerRoomManager = () => {
   // eslint-disable-next-line no-restricted-globals
   if (confirm("Do you want this Hosteller to add this room !!✅") == true) {
     
-    fetch("https://localhost:7047/api/Hosteller/addroom?hosteller="+id+"&roomNo=" + queryParameters.get("id"), {
+    fetch("/api/Hosteller/addroom?hosteller="+id+"&roomNo=" + queryParameters.get("id"), {
       method: "post",
       headers: {
         "Content-type": "application/JSON",
@@ -70,7 +70,7 @@ export const HostellerRoomManager = () => {
 
     // fetch hosteller all data
     const fetchData = () => {
-      fetch("https://localhost:7047/api/Hosteller/new")
+      fetch("/api/Hosteller/new")
         .then((response) => {
           return response.json();
         })

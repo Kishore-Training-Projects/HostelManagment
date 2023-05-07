@@ -31,7 +31,7 @@ export const HostellerAdmin = () => {
   // eslint-disable-next-line no-restricted-globals
   if (confirm("Do you want to delete this record !!💀") == true) {
     
-    fetch("https://localhost:7047/api/Hosteller/" + id, {
+    fetch("/api/Hosteller/" + id, {
       method: "delete",
       headers: {
         "Content-type": "application/JSON",
@@ -69,7 +69,7 @@ export const HostellerAdmin = () => {
 
     // fetch hosteller all data
     const fetchData = (id) => {
-      fetch("https://localhost:7047/api/Hosteller")
+      fetch("/api/Hosteller")
         .then((response) => {
           return response.json();
         })

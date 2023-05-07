@@ -26,7 +26,7 @@ export const ComplaintAdmin = () => {
 
   // fetch complaint
   const fetchData = () => {
-    fetch("https://localhost:7047/api/Complaint/")
+    fetch("/api/Complaint/")
       .then((response) => {
         return response.json();
       })
@@ -42,7 +42,7 @@ export const ComplaintAdmin = () => {
 
   // fetch individual complaint
   const fetchComplaintData = (id) => {
-    fetch("https://localhost:7047/api/Complaint/" + id)
+    fetch("/api/Complaint/" + id)
       .then((response) => {
         return response.json();
       })
@@ -65,7 +65,7 @@ export const ComplaintAdmin = () => {
 
   const submit_edit_form = (event) => {
     event.preventDefault();
-    fetch("https://localhost:7047/api/Complaint/" + individual.complaintID, {
+    fetch("/api/Complaint/" + individual.complaintID, {
       method: "put",
       body: JSON.stringify(individual),
       headers: {
@@ -100,7 +100,7 @@ export const ComplaintAdmin = () => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Do you want to delete this record !!💀") == true) {
       
-      fetch("https://localhost:7047/api/Complaint/" + id, {
+      fetch("/api/Complaint/" + id, {
         method: "delete",
         headers: {
           "Content-type": "application/JSON",

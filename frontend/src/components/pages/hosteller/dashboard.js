@@ -26,7 +26,7 @@ export const Dashboard = () => {
   // fet notice data
 
   const fetchData = () => {
-    fetch("https://localhost:7047/api/NoticeBoard")
+    fetch("/api/NoticeBoard")
       .then((response) => {
         return response.json();
       })

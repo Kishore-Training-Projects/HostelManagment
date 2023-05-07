@@ -24,7 +24,7 @@ export const AdminDashboard = () => {
     // fet notice data
 
   const fetchData = () => {
-    fetch("https://localhost:7047/api/NoticeBoard")
+    fetch("/api/NoticeBoard")
       .then((response) => {
         return response.json();
       })
@@ -46,7 +46,7 @@ export const AdminDashboard = () => {
   // fetch count data
 
   const fetchcountData = () => {
-    fetch("https://localhost:7047/api/user/count")
+    fetch("/api/user/count")
       .then((response) => {
         return response.json();
       })

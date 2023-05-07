@@ -18,7 +18,7 @@ export const RoomDetailManager = () => {
   // get room details
   useEffect(() => {
     const fetchData = (id) => {
-      fetch("https://localhost:7047/api/room/" + id)
+      fetch("/api/room/" + id)
         .then((response) => {
           return response.json();
         })
@@ -41,7 +41,7 @@ const removeuser = (id) => {
   // eslint-disable-next-line no-restricted-globals
   if (confirm("Do you want to remove user from record !!💀") == true) {
     
-    fetch("https://localhost:7047/api/Hosteller/roommates/remove/" + id, {
+    fetch("/api/Hosteller/roommates/remove/" + id, {
       method: "put",
       headers: {
         "Content-type": "application/JSON",
@@ -76,7 +76,7 @@ const removeuser = (id) => {
   // get userdetails of that room
 
   const fetchhostellerData = (id) => {
-    fetch("https://localhost:7047/api/Hosteller/room/" + id)
+    fetch("/api/Hosteller/room/" + id)
       .then((response) => {
         return response.json();
       })
