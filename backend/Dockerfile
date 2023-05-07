@@ -3,7 +3,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -11,6 +10,7 @@ COPY ["HostelManagement.csproj", "."]
 RUN dotnet restore "./HostelManagement.csproj"
 COPY . .
 WORKDIR "/src/."
+RUN dotnet add package SendGrid --version 9.28.1
 RUN dotnet build "HostelManagement.csproj" -c Release -o /app/build
 
 FROM build AS publish

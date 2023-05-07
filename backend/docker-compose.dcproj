@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>0351ddda-4b6f-4d9b-bb55-0fe10d3fc2a7</ProjectGuid>
+    <ProjectGuid>b7b4b481-6471-4af0-a007-7a8f0d956646</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>hostelmanagement</DockerServiceName>

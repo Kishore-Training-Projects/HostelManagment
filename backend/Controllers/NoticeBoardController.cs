@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HostelManagement.Data;
 using HostelManagement.Model;
+using Hangfire;
+using HostelManagement.Services;
 
 namespace HostelManagement.Controllers
 {
@@ -15,6 +17,7 @@ namespace HostelManagement.Controllers
     public class NoticeBoardController : ControllerBase
     {
         private readonly HostelManagementContext _context;
+        EmailSender email = new EmailSender();
 
         public NoticeBoardController(HostelManagementContext context)
         {
@@ -92,6 +95,14 @@ namespace HostelManagement.Controllers
           }
             _context.NoticeBoardModel.Add(noticeBoardModel);
             await _context.SaveChangesAsync();
+
+            string emailsubject = "Important Notice 📌";
+            String message = "Hi user\n\t"+noticeBoardModel.NoticeDetails;
+
+            List<HostellerModel> hostel = await _context.HostellerModel.Include(x => x.Room).ToListAsync();
+
+         email.sendGroupEmail(emailsubject, hostel, message);
+
 
             return CreatedAtAction("GetNoticeBoardModel", new { id = noticeBoardModel.NoticeId }, noticeBoardModel);
         }

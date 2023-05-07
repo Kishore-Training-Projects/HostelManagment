@@ -34,6 +34,9 @@ namespace HostelManagement.Controllers
         }
 
 
+        
+
+
         // api to get count od details
 
         // GET: api/User

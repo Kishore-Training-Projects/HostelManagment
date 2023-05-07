@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HostelManagement.Data;
 using HostelManagement.Model;
+using HostelManagement.Services;
+using Microsoft.Extensions.Hosting;
+using Hangfire;
 
 namespace HostelManagement.Controllers
 {
@@ -16,6 +19,8 @@ namespace HostelManagement.Controllers
     public class HostellerController : ControllerBase
     {
         private readonly HostelManagementContext _context;
+
+        EmailSender email = new EmailSender();
 
         public HostellerController(HostelManagementContext context)
         {
@@ -171,6 +176,13 @@ namespace HostelManagement.Controllers
 
             try
             {
+                string emailsubject = "Room Confirmation 🙏";
+                String message = "Dear " + hos.Name + "\n\t"
+                    + "Thank you for registering in our system . Your romm is confirm. \n"
+                    +"Your room No : "+room.RoomNo;
+                email.SendEmail(emailsubject, hos.Email, hos.Name, message).Wait();
+
+
                 _context.Entry(hos).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
@@ -206,6 +218,12 @@ namespace HostelManagement.Controllers
             
            try
             {
+                string emailsubject = "RommDetails Removed ❌";
+                String message = "Dear " + hostellerModel.Name + "\n\t"
+                    + "Thank you for registering in our system . Your romm is closed. \n"
+                + "Your are removed from the room🎉";
+                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -273,11 +291,21 @@ namespace HostelManagement.Controllers
             {
             _context.HostellerModel.Add(hostellerModel);
             await _context.SaveChangesAsync();
-             }
+
+
+            }
             catch(Exception e)
             {
-                return Problem("eroor in creating hosteller");
+                return Problem("Error in creating hosteller");
             }
+
+                string emailsubject = "Registeration Confirmation 🙏";
+                String message = "Dear " + hostellerModel.Name + "\n\t"
+                    + "Thank you for registering in our system . Please always support us.";
+
+               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message);
+
+
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);
         }
 
