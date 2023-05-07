@@ -286,17 +286,13 @@ namespace HostelManagement.Controllers
           {
               return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
           }
-          try
-            {
+        
             _context.HostellerModel.Add(hostellerModel);
             await _context.SaveChangesAsync();
 
 
-            }
-            catch(Exception e)
-            {
-                return Problem("Error in creating hosteller");
-            }
+            
+           
 
                 string emailsubject = "Registeration Confirmation 🙏";
                 String message = "Dear " + hostellerModel.Name + "\n\t"

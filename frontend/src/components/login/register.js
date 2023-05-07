@@ -41,7 +41,9 @@ export const Register = () => {
         if (res.status == 400) {
           throw new Error("Server responds with error!");
         }
-        return res.json();
+        if (res.status == 500) {
+            alert("done");
+        }
       })
       .then((data) => {
         if(data["detail"]) {

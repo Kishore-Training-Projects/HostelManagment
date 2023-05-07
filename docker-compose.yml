@@ -1,0 +1,49 @@
+version: '3.4'
+
+networks:
+  hostelnetwork:
+  frontendnetwork:
+
+
+services:
+  hosteldb:
+    container_name: hosteldb
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=password@123#
+    networks:
+      - hostelnetwork
+
+  hostelmanagement:
+    container_name: hostel-app
+    ports:
+      - 8004:80
+    image: ${DOCKER_REGISTRY-}hostelmanagement
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    depends_on:
+      - hosteldb
+    networks:
+      - hostelnetwork
+      - frontendnetwork
+
+  app:
+    container_name: app-dev
+    image: app-dev
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - 3000:3000
+    depends_on:
+      - hostelmanagement
+    networks:
+      - frontendnetwork

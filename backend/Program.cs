@@ -30,6 +30,8 @@ namespace HostelManagement
             builder.Services.AddCors(p=>p.AddPolicy("corspolicy", build =>
             {
                 build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                build.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+
             }));
 
             var app = builder.Build();
@@ -41,7 +43,6 @@ namespace HostelManagement
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
 
             app.UseCors("corspolicy");
 
