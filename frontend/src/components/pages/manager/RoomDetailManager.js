@@ -55,15 +55,17 @@ const removeuser = (id) => {
           throw new Error("Server responds with error!");
         }
        
-       return;
+        return res.json();
+
       })
 
       .then((data) => {
-        if (data["detail"]) {
-          alert("Error Cant delete");
-        }else
+        if(data["hostellerId"])
         {
           fetchhostellerData(queryParameters.get("id"));
+        }
+        if (data["detail"]) {
+          alert("Error Cant delete");
         }
       });
   };

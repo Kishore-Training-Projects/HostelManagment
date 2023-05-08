@@ -29,7 +29,7 @@ services:
     depends_on:
       - hosteldb
     environment:
-      - SENDGRID_API_KEY=""
+      - EMAIL_API="" 
 
     networks:
       - hostelnetwork

@@ -43,7 +43,7 @@ export const AddHostellerAdmin = () => {
           throw new Error("Server responds with error!");
         }
         if (res.status == 201) {
-          navigate("/login");
+          navigate("/admin/hosteller");
         }
         return res.json();
       })
@@ -52,7 +52,7 @@ export const AddHostellerAdmin = () => {
           alert("Error Cant Insert");
         }
         else {          
-         navigate("/login");
+         navigate("/admin/hosteller");
         } 
          
       });

@@ -42,7 +42,7 @@ export const DashboardManager = () => {
   };
 
   const [noticecolor, setnoticecolor] = useState([
-    "gray",
+    "red",
     "yellow",
     "red",
     "blue",

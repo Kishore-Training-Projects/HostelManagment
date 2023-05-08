@@ -32,11 +32,11 @@ namespace HostelManagement.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HostellerModel>>> GetHostellerModel()
         {
-          if (_context.HostellerModel == null)
-          {
-              return NotFound();
-          }
-            return await _context.HostellerModel.Include(x=>x.Room).ToListAsync();
+            if (_context.HostellerModel == null)
+            {
+                return NotFound();
+            }
+            return await _context.HostellerModel.Include(x => x.Room).ToListAsync();
         }
 
 
@@ -55,9 +55,9 @@ namespace HostelManagement.Controllers
             {
 
                 var hostel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
-            return await _context.HostellerModel.Where(x=>x.Room.RoomNo == hostel.Room.RoomNo).Include(x => x.Room).ToListAsync();
+                return await _context.HostellerModel.Where(x => x.Room.RoomNo == hostel.Room.RoomNo).Include(x => x.Room).ToListAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return NotFound();
             }
@@ -77,7 +77,7 @@ namespace HostelManagement.Controllers
             {
                 return NotFound();
             }
-            return await _context.HostellerModel.Where(x=>x.Room == null).ToListAsync();
+            return await _context.HostellerModel.Where(x => x.Room == null).ToListAsync();
         }
 
 
@@ -111,7 +111,7 @@ namespace HostelManagement.Controllers
             {
                 return NotFound();
             }
-            var hostellerModel = await _context.HostellerModel.Where(x => x.Room.RoomNo == id).ToListAsync() ;
+            var hostellerModel = await _context.HostellerModel.Where(x => x.Room.RoomNo == id).ToListAsync();
 
             if (hostellerModel == null)
             {
@@ -145,22 +145,22 @@ namespace HostelManagement.Controllers
                 return Problem(e.Message);
 
             }
-          
-            if(hosteller == null)
+
+            if (hosteller == null)
             {
                 return Problem("User Doesnt Exsist");
             }
-          
+
 
             return hosteller;
         }
 
 
-           // api to addroom for hosteller for manager
+        // api to addroom for hosteller for manager
 
         // POST: api/Hosteller
         [HttpPost("addroom/")]
-        public async Task<ActionResult<HostellerModel>> PostHostellerModelss(int hosteller , int roomNo)
+        public async Task<ActionResult<HostellerModel>> PostHostellerModelss(int hosteller, int roomNo)
         {
 
 
@@ -175,7 +175,7 @@ namespace HostelManagement.Controllers
 
             try
             {
-               
+
 
 
                 _context.Entry(hos).State = EntityState.Modified;
@@ -185,11 +185,19 @@ namespace HostelManagement.Controllers
             {
                 return Problem("Unable to add room to hosteller");
             }
-            /*string emailsubject = "Room Confirmation 🙏";
-            String message = "Dear " + hos.Name + "\n\t"
-                + "Thank you for registering in our system . Your romm is confirm. \n"
-                + "Your room No : " + room.RoomNo;
-            email.SendEmail(emailsubject, hos.Email, hos.Name, message).Wait();*/
+            try
+            {
+
+                string emailsubject = "Room Confirmation 🙏";
+                String message = "Dear " + hos.Name + "\n\t"
+                    + "Thank you for registering in our system . Your romm is confirm. \n"
+                    + "Your room No : " + room.RoomNo;
+                email.SendEmail(emailsubject, hos.Email, hos.Name, message).Wait();
+            }
+            catch (Exception e)
+            {
+                return Problem("unable to send mail");
+            }
 
             return CreatedAtAction("GetHostellerModel", new { id = hosteller }, hos);
         }
@@ -207,19 +215,19 @@ namespace HostelManagement.Controllers
 
             // get details of model and and update room details 
 
-            var hostellerModel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+            var hostellerModel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
             var Rooms = hostellerModel.Room;
             Rooms.Occupied = Rooms.Occupied - 1;
             hostellerModel.Room = null;
-          
 
-            
-           try
+
+
+            try
             {
 
-            _context.Entry(hostellerModel).State = EntityState.Modified;
-            _context.Entry(Rooms).State = EntityState.Modified;
-        
+                _context.Entry(hostellerModel).State = EntityState.Modified;
+                _context.Entry(Rooms).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -233,14 +241,24 @@ namespace HostelManagement.Controllers
                     throw;
                 }
             }
-                /*string emailsubject = "RommDetails Removed ❌";
+
+            try
+            {
+
+                string emailsubject = "RommDetails Removed ❌";
                 String message = "Dear " + hostellerModel.Name + "\n\t"
                     + "Thank you for registering in our system . Your romm is closed. \n"
                 + "Your are removed from the room🎉";
-                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
+                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
 
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
 
-            var hostel = await _context.HostellerModel.Include(x=>x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
+            }
+
+            var hostel = await _context.HostellerModel.Include(x => x.Room).Where(x => x.HostellerId == id).FirstOrDefaultAsync();
 
             return hostel;
         }
@@ -252,7 +270,7 @@ namespace HostelManagement.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<HostellerModel>> PutHostellerModel(int id, HostellerModel hostellerModel)
         {
-            
+
 
             if (id != hostellerModel.HostellerId)
             {
@@ -286,24 +304,31 @@ namespace HostelManagement.Controllers
         [HttpPost]
         public async Task<ActionResult<HostellerModel>> PostHostellerModel(HostellerModel hostellerModel)
         {
-          if (_context.HostellerModel == null)
-          {
-              return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
-          }
-        
+            if (_context.HostellerModel == null)
+            {
+                return Problem("Entity set 'HostelManagementContext.HostellerModel'  is null.");
+            }
+
             _context.HostellerModel.Add(hostellerModel);
             await _context.SaveChangesAsync();
 
 
 
 
+            try
+            {
 
-           /* string emailsubject = "Registeration Confirmation 🙏";
-            String message = "Dear " + hostellerModel.Name + "\n\t"
-                + "Thank you for registering in our system . Please always support us.";
+                string emailsubject = "Registeration Confirmation 🙏";
+                String message = "Dear " + hostellerModel.Name + "\n\t"
+                    + "Thank you for registering in our system . Please always support us.";
 
-            email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
+                email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();
 
+            }
+            catch (Exception e)
+            {
+                return Problem("Error in sending mail");
+            }
 
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);
         }
@@ -322,7 +347,7 @@ namespace HostelManagement.Controllers
             {
                 return NotFound();
             }
-             hostellerModel.Room = null;
+            hostellerModel.Room = null;
 
             _context.HostellerModel.Remove(hostellerModel);
             await _context.SaveChangesAsync();

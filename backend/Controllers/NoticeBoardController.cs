@@ -27,10 +27,10 @@ namespace HostelManagement.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NoticeBoardModel>>> GetNoticeBoardModel()
         {
-          if (_context.NoticeBoardModel == null)
-          {
-              return NotFound();
-          }
+            if (_context.NoticeBoardModel == null)
+            {
+                return NotFound();
+            }
             return await _context.NoticeBoardModel.ToListAsync();
         }
 
@@ -38,10 +38,10 @@ namespace HostelManagement.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NoticeBoardModel>> GetNoticeBoardModel(int id)
         {
-          if (_context.NoticeBoardModel == null)
-          {
-              return NotFound();
-          }
+            if (_context.NoticeBoardModel == null)
+            {
+                return NotFound();
+            }
             var noticeBoardModel = await _context.NoticeBoardModel.FindAsync(id);
 
             if (noticeBoardModel == null)
@@ -88,19 +88,19 @@ namespace HostelManagement.Controllers
         [HttpPost]
         public async Task<ActionResult<NoticeBoardModel>> PostNoticeBoardModel(NoticeBoardModel noticeBoardModel)
         {
-          if (_context.NoticeBoardModel == null)
-          {
-              return Problem("Entity set 'HostelManagementContext.NoticeBoardModel'  is null.");
-          }
+            if (_context.NoticeBoardModel == null)
+            {
+                return Problem("Entity set 'HostelManagementContext.NoticeBoardModel'  is null.");
+            }
             _context.NoticeBoardModel.Add(noticeBoardModel);
             await _context.SaveChangesAsync();
 
             string emailsubject = "Important Notice 📌";
-            String message = "Hi user\n\t"+noticeBoardModel.NoticeDetails;
+            String message = "Hi user\n\t" + noticeBoardModel.NoticeDetails;
 
             List<HostellerModel> hostel = await _context.HostellerModel.Include(x => x.Room).ToListAsync();
 
-         email.sendGroupEmail(emailsubject, hostel, message);
+            email.sendGroupEmail(emailsubject, hostel, message);
 
 
             return CreatedAtAction("GetNoticeBoardModel", new { id = noticeBoardModel.NoticeId }, noticeBoardModel);

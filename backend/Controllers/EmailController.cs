@@ -14,10 +14,10 @@ namespace HostelManagement.Controllers
         {
             string emailsubject = "Registeration Confirmation";
             string username = "kishore D";
-            string message = "Dear " + username + "\n"
+            string message = "Dear " + username + ""
                     + "Thank you for registering in our application";
             EmailSender email = new EmailSender();
-            email.SendEmail(emailsubject, "kishore.ct19@bitsathy.ac.in", username, message).Wait();
+            email.SendEmail(emailsubject, user, username, message).Wait();
 
                 return Ok();
 

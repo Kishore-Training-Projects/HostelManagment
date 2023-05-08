@@ -25,22 +25,22 @@ namespace HostelManagement.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ComplaintModel>>> GetComplaintModel()
         {
-          if (_context.ComplaintModel == null)
-          {
-              return NotFound();
-          }
-            return await _context.ComplaintModel.Include(x=>x.hosteller).ToListAsync();
+            if (_context.ComplaintModel == null)
+            {
+                return NotFound();
+            }
+            return await _context.ComplaintModel.Include(x => x.hosteller).ToListAsync();
         }
 
         // GET: api/Complaint/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ComplaintModel>> GetComplaintModel(int id)
         {
-          if (_context.ComplaintModel == null)
-          {
-              return NotFound();
-          }
-            var complaintModel = await _context.ComplaintModel.Include(x=>x.hosteller).Where(x => x.ComplaintID == id).FirstOrDefaultAsync();
+            if (_context.ComplaintModel == null)
+            {
+                return NotFound();
+            }
+            var complaintModel = await _context.ComplaintModel.Include(x => x.hosteller).Where(x => x.ComplaintID == id).FirstOrDefaultAsync();
 
             if (complaintModel == null)
             {
@@ -102,7 +102,7 @@ namespace HostelManagement.Controllers
                     throw;
                 }
             }
-            
+
 
             return await _context.ComplaintModel.FindAsync(id);
         }
@@ -114,10 +114,10 @@ namespace HostelManagement.Controllers
         {
             int id = complaintModel.hosteller.HostellerId;
             Console.WriteLine(id);
-          if (_context.ComplaintModel == null)
-          {
-              return Problem("Entity set 'HostelManagementContext.ComplaintModel'  is null.");
-          }
+            if (_context.ComplaintModel == null)
+            {
+                return Problem("Entity set 'HostelManagementContext.ComplaintModel'  is null.");
+            }
 
             var hosteller = await _context.HostellerModel.Where(x => x.HostellerId == id).FirstOrDefaultAsync();
             complaintModel.hosteller = hosteller;
@@ -126,7 +126,7 @@ namespace HostelManagement.Controllers
                 _context.ComplaintModel.Add(complaintModel);
                 await _context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Problem(e.Message);
             }

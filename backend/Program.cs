@@ -27,7 +27,7 @@ namespace HostelManagement
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddCors(p=>p.AddPolicy("corspolicy", build =>
+            builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
             {
                 build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
                 build.WithOrigins("https://localhost:3000").AllowAnyMethod().AllowAnyHeader();

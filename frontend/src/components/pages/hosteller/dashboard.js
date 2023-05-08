@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export const Dashboard = () => {
   const [noticecolor, setnoticecolor] = useState([
-    "gray",
+    "red",
     "yellow",
     "red",
     "blue",
