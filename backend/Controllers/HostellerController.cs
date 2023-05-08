@@ -295,14 +295,14 @@ namespace HostelManagement.Controllers
             await _context.SaveChangesAsync();
 
 
-            
-           /*
 
-                string emailsubject = "Registeration Confirmation 🙏";
-                String message = "Dear " + hostellerModel.Name + "\n\t"
-                    + "Thank you for registering in our system . Please always support us.";
 
-               email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
+
+           /* string emailsubject = "Registeration Confirmation 🙏";
+            String message = "Dear " + hostellerModel.Name + "\n\t"
+                + "Thank you for registering in our system . Please always support us.";
+
+            email.SendEmail(emailsubject, hostellerModel.Email, hostellerModel.Name, message).Wait();*/
 
 
             return CreatedAtAction("GetHostellerModel", new { id = hostellerModel.HostellerId }, hostellerModel);

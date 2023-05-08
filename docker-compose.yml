@@ -28,6 +28,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - hosteldb
+    environment:
+      - SENDGRID_API_KEY=""
+
     networks:
       - hostelnetwork
       - frontendnetwork
